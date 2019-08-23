@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".KaricoMotorPlayer">
+    tools:context=".KaricoMotorPlayer"
+    android:background="#A6D0E3"
+    >
 
     <RelativeLayout
         android:id="@+id/musicselectionheader"
@@ -23,62 +25,79 @@
 
     </RelativeLayout>
 
-    <android.support.constraint.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/musicselectionheader"
-        android:layout_marginTop="-1dp">
+        >
 
         <ImageButton
-            android:id="@+id/button"
-            android:layout_width="181dp"
-            android:layout_height="286dp"
+            android:id="@+id/upperleftButton"
+            android:layout_width="195dp"
+            android:layout_height="290dp"
             android:src="@drawable/icons_fast_forward"
-            android:text="Button"
-            tools:layout_editor_absoluteX="14dp"
-            tools:layout_editor_absoluteY="22dp" />
+            android:background="@drawable/motor_player_buttons"
+            android:backgroundTint="#863333"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:elevation="13dp"
+
+            />
 
         <ImageButton
             android:id="@+id/button2"
-            android:layout_width="177dp"
-            android:layout_height="286dp"
+            android:layout_width="195dp"
+            android:layout_height="290dp"
+            android:layout_alignParentRight="true"
             android:src="@drawable/icons_pause"
-            android:text="Button"
-            tools:layout_editor_absoluteX="213dp"
-            tools:layout_editor_absoluteY="22dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/motor_player_buttons"
+            android:backgroundTint="#D9C659"
+            android:elevation="13dp"
 
             />
 
         <ImageButton
             android:id="@+id/button3"
-            android:layout_width="181dp"
-            android:layout_height="304dp"
+            android:layout_width="195dp"
+            android:layout_height="290dp"
+            android:layout_alignParentBottom="true"
             android:src="@drawable/icons_stop"
-            android:text="Button"
-            tools:layout_editor_absoluteX="14dp"
-            tools:layout_editor_absoluteY="320dp" />
+            android:background="@drawable/motor_player_buttons"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="15dp"
+            android:backgroundTint="#363386"
+            android:elevation="13dp"
+
+            />
 
         <ImageButton
             android:id="@+id/button4"
-            android:layout_width="184dp"
-            android:layout_height="304dp"
+            android:layout_width="195dp"
+            android:layout_height="290dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
             android:src="@drawable/icons_fast_forward"
-            android:text="Button"
-            tools:layout_editor_absoluteX="211dp"
-            tools:layout_editor_absoluteY="324dp"
+            android:background="@drawable/motor_player_buttons"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="15dp"
+            android:backgroundTint="#7ACC66"
+            android:elevation="13dp"
 
             />
 
         <ImageButton
             android:id="@+id/button5"
-            android:layout_width="220dp"
-            android:layout_height="199dp"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
             android:src="@drawable/icons_play"
-            android:text="Button"
-            tools:layout_editor_absoluteX="95dp"
-            tools:layout_editor_absoluteY="228dp"
-
+            android:layout_centerInParent="true"
+            android:translationZ="1dp"
+            android:background="@drawable/motor_player_rounded_button"
+            android:backgroundTint="#E09292"
+            android:elevation="13dp"
             />
-    </android.support.constraint.ConstraintLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

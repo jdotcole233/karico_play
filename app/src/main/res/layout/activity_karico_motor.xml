@@ -17,6 +17,7 @@
         >
 
         <ImageButton
+            android:id="@+id/musicdismissbtn"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/ic_arrow_back_black_24dp"
@@ -25,6 +26,7 @@
 
 
         <ImageButton
+            android:id="@+id/musicfilechooser"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/ic_more_vert_black_24dp"
