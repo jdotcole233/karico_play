@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".KaricoMotorPlayer">
+
+    <RelativeLayout
+        android:id="@+id/musicselectionheader"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/menu_background"
+        >
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_arrow_back_black_24dp"
+            android:background="@drawable/menu_background"
+            />
+
+    </RelativeLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/musicselectionheader"
+        android:layout_marginTop="-1dp">
+
+        <ImageButton
+            android:id="@+id/button"
+            android:layout_width="181dp"
+            android:layout_height="286dp"
+            android:src="@drawable/icons_fast_forward"
+            android:text="Button"
+            tools:layout_editor_absoluteX="14dp"
+            tools:layout_editor_absoluteY="22dp" />
+
+        <ImageButton
+            android:id="@+id/button2"
+            android:layout_width="177dp"
+            android:layout_height="286dp"
+            android:src="@drawable/icons_pause"
+            android:text="Button"
+            tools:layout_editor_absoluteX="213dp"
+            tools:layout_editor_absoluteY="22dp"
+
+            />
+
+        <ImageButton
+            android:id="@+id/button3"
+            android:layout_width="181dp"
+            android:layout_height="304dp"
+            android:src="@drawable/icons_stop"
+            android:text="Button"
+            tools:layout_editor_absoluteX="14dp"
+            tools:layout_editor_absoluteY="320dp" />
+
+        <ImageButton
+            android:id="@+id/button4"
+            android:layout_width="184dp"
+            android:layout_height="304dp"
+            android:src="@drawable/icons_fast_forward"
+            android:text="Button"
+            tools:layout_editor_absoluteX="211dp"
+            tools:layout_editor_absoluteY="324dp"
+
+            />
+
+        <ImageButton
+            android:id="@+id/button5"
+            android:layout_width="220dp"
+            android:layout_height="199dp"
+            android:src="@drawable/icons_play"
+            android:text="Button"
+            tools:layout_editor_absoluteX="95dp"
+            tools:layout_editor_absoluteY="228dp"
+
+            />
+    </android.support.constraint.ConstraintLayout>
+
+</RelativeLayout>

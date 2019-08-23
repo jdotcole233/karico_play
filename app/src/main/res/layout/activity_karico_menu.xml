@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".KaricoMenuActivity"
+    android:background="@drawable/menu_background"
+    >
+
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="123dp"
+        android:layout_height="189dp"
+        app:srcCompat="@drawable/Music"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        />
+
+    <ImageView
+        android:id="@+id/musicimage"
+        android:layout_width="119dp"
+        android:layout_height="189dp"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/microphone"
+        tools:layout_editor_absoluteX="292dp"
+        tools:layout_editor_absoluteY="0dp"
+        android:layout_alignParentRight="true"
+        />
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        app:srcCompat="@drawable/chicos_jugando"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="137dp"
+        android:layout_alignParentBottom="true"
+        />
+
+    <TextView
+        android:id="@+id/menutext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/musicimage"
+        android:fontFamily="sans-serif-black"
+        android:text="MENU"
+        android:textAlignment="center"
+        android:textSize="35sp"
+        android:textColor="#ffffff"
+        />
+
+    <TextView
+        android:id="@+id/choosetext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choose one of the following"
+        android:textAlignment="center"
+        android:layout_below="@+id/menutext"
+        android:textColor="#ffffff"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/choosetext"
+        android:layout_centerInParent="true"
+        android:padding="10dp"
+        >
+
+        <Button
+            android:id="@+id/motoractivitybutton"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Motor Activity"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:background="@drawable/menu_buttons_background"
+            android:elevation="50dp"
+            android:textAllCaps="false"
+            />
+
+        <Button
+            android:id="@+id/speechbutton"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Speech/Pronunciation"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:background="@drawable/menu_buttons_background"
+            android:layout_marginTop="10dp"
+            android:elevation="50dp"
+            android:textAllCaps="false"
+
+            />
+
+        <Button
+            android:id="@+id/otherbutton"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Other+"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:background="@drawable/menu_buttons_background"
+            android:layout_marginTop="10dp"
+            android:elevation="50dp"
+            android:textAllCaps="false"
+
+            />
+    </LinearLayout>
+</RelativeLayout>

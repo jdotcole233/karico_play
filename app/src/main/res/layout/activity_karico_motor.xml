@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".KaricoMotorActivity"
+    android:background="@drawable/menu_background"
+    >
+
+    <RelativeLayout
+        android:id="@+id/musicselectionheader"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/menu_background"
+        >
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_arrow_back_black_24dp"
+            android:background="@drawable/menu_background"
+            />
+
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_more_vert_black_24dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/menu_background"
+            />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/selectmusictext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Music"
+        android:textAlignment="center"
+        android:textSize="35sp"
+        android:layout_below="@+id/musicselectionheader"
+        android:layout_marginTop="20dp"
+        android:textColor="#ffffff"
+        />
+
+    <TextView
+        android:id="@+id/chooseoptiontext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choose an option"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:layout_below="@+id/selectmusictext"
+        android:textColor="#ffffff"
+        />
+
+    <TextView
+        android:id="@+id/categorytext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Category"
+        android:textAlignment="textStart"
+        android:layout_gravity="start"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"
+        android:layout_below="@+id/chooseoptiontext"
+        android:textColor="#ffffff"
+
+        />
+
+</RelativeLayout>

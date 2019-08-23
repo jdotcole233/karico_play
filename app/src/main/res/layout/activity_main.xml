@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="@drawable/menu_background"
+    >
+
+    <TextView
+        android:id="@+id/kariconame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:fontFamily="serif"
+        android:text="KARICO"
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:textSize="70dp"
+        android:textStyle="italic"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="...the world from a different perspective"
+        android:layout_below="@+id/kariconame"
+        android:textAlignment="center"
+        android:layout_gravity="end"
+        android:paddingRight="10dp"
+        android:textColor="#ffffff"
+        />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        app:srcCompat="@drawable/chicos_jugando"
+        android:layout_alignParentBottom="true"
+        />
+
+</RelativeLayout>
