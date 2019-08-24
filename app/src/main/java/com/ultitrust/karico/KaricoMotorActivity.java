@@ -39,7 +39,6 @@ public class KaricoMotorActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_CODE:
                 Log.i("Karico", data.getData().toString());
@@ -47,4 +46,7 @@ public class KaricoMotorActivity extends AppCompatActivity {
 
         }
     }
+
+
+
 }
