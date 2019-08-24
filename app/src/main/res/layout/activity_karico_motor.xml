@@ -73,20 +73,22 @@
         android:textColor="#ffffff"
         />
 
-        <ScrollView
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/music_list_display"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:layout_below="@+id/categorytext"
             android:background="#73ffffff"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_below="@+id/categorytext"
+            android:padding="10dp"
+
             >
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
-        </ScrollView>
+
+        </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>

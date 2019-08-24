@@ -27,13 +27,13 @@ public class KaricoMusicAdapater extends RecyclerView.Adapter<KaricoMusicAdapate
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
          View myview = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.activity_music_row_view, viewGroup, false);
         return new MyViewHolder(myview);
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder myViewHolder, int i) {
+    public void onBindViewHolder(MyViewHolder myViewHolder, final int i) {
             myViewHolder.folder_name.setText(musicModels.get(i).getFolder_name());
             myViewHolder.folder_size.setText(musicModels.get(i).getFolder_size().toString());
             myViewHolder.music_number.setText(musicModels.get(i).getNumber_of_music().toString());
@@ -41,7 +41,7 @@ public class KaricoMusicAdapater extends RecyclerView.Adapter<KaricoMusicAdapate
             myViewHolder.remove_folder_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "Folder clicked", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Folder clicked " + musicModels.get(i).getFolder_name(), Toast.LENGTH_LONG).show();
                 }
             });
     }
@@ -58,7 +58,7 @@ public class KaricoMusicAdapater extends RecyclerView.Adapter<KaricoMusicAdapate
 
         private TextView folder_name, folder_size, music_number;
         private ImageButton remove_folder_btn;
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(View itemView) {
             super(itemView);
             folder_name = itemView.findViewById(R.id.folderName);
             folder_size = itemView.findViewById(R.id.foldersize);

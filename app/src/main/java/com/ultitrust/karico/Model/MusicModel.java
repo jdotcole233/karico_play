@@ -2,11 +2,9 @@ package com.ultitrust.karico.Model;
 
 public class MusicModel {
 
-    private String folder_name;
-    private Double folder_size;
-    private Integer number_of_music;
+    private String folder_name,folder_size, number_of_music;
 
-    public MusicModel(String folder_name, Double folder_size, Integer number_of_music) {
+    public MusicModel(String folder_name, String folder_size, String number_of_music) {
         this.folder_name = folder_name;
         this.folder_size = folder_size;
         this.number_of_music = number_of_music;
@@ -21,19 +19,19 @@ public class MusicModel {
         this.folder_name = folder_name;
     }
 
-    public Double getFolder_size() {
+    public String getFolder_size() {
         return folder_size;
     }
 
-    public void setFolder_size(Double folder_size) {
+    public void setFolder_size(String folder_size) {
         this.folder_size = folder_size;
     }
 
-    public Integer getNumber_of_music() {
+    public String getNumber_of_music() {
         return number_of_music;
     }
 
-    public void setNumber_of_music(Integer number_of_music) {
+    public void setNumber_of_music(String number_of_music) {
         this.number_of_music = number_of_music;
     }
 }
