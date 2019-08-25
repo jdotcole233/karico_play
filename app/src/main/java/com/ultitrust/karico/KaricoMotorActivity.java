@@ -1,6 +1,8 @@
 package com.ultitrust.karico;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.ultitrust.karico.Adapter.KaricoMusicAdapater;
+import com.ultitrust.karico.Model.KaricoAlertDialog;
 import com.ultitrust.karico.Model.MusicModel;
 
 import org.json.JSONArray;
@@ -113,27 +116,20 @@ public class KaricoMotorActivity extends AppCompatActivity {
                             }
                             String message = "Karico found that you replaced " + numberOfChanges + " new folders to existing playlist.\n" +
                                     "Do you want to save changes?";
-                            Toast.makeText(KaricoMotorActivity.this, message, Toast.LENGTH_LONG).show();
-                            saveFolderList(savedMusicPaths);
-                            finish();
+                            createDialog(message);
+
                         }
-                        finish();
 
                     } else if (size_of_savedpaths > size_of_readFolderList) {
                         numberOfChanges = savedMusicPaths.size() - originalMusicPaths.size();
                         String message = "Karico found that you added " + numberOfChanges + " new folders to existing playlist.\n" +
                                 "Do you want to save changes?";
-                        Toast.makeText(KaricoMotorActivity.this, message, Toast.LENGTH_LONG).show();
-                        saveFolderList(savedMusicPaths);
-                        finish();
+                        createDialog(message);
                     } else if (size_of_savedpaths < size_of_readFolderList) {
                         numberOfChanges = originalMusicPaths.size() - savedMusicPaths.size();
                         String message = "Karico found that you deleted " + numberOfChanges +" folder(s) from existing playlist.\n" +
                                 "Do you want to save changes?";
-                        Toast.makeText(KaricoMotorActivity.this, message, Toast.LENGTH_LONG).show();
-                        saveFolderList(savedMusicPaths);
-                        finish();
-
+                        createDialog(message);
                     }
                 }
             }
@@ -173,6 +169,27 @@ public class KaricoMotorActivity extends AppCompatActivity {
                 break;
 
         }
+    }
+
+
+    public void createDialog(String message){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Karico Alert")
+                .setMessage(message)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        saveFolderList(savedMusicPaths);
+                        finish();
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        AlertDialog alertDialog1 = alertDialog.create();
+        alertDialog1.show();
     }
 
 
