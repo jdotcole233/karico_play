@@ -42,6 +42,7 @@ public class KaricoMotorActivity extends AppCompatActivity {
     private RecyclerView.Adapter recyclerViewAdapter;
     private List<MusicModel> musicModels;
     private ArrayList<Uri> savedMusicPaths;
+    private ArrayList<Uri> originalMusicPaths;
     private int size_of_readFolderList;
 
 
@@ -53,6 +54,7 @@ public class KaricoMotorActivity extends AppCompatActivity {
         music_file_chooser = findViewById(R.id.musicfilechooser);
         recyclerView = findViewById(R.id.music_list_display);
         savedMusicPaths = new ArrayList<>();
+        originalMusicPaths = new ArrayList<>();
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
@@ -79,6 +81,7 @@ public class KaricoMotorActivity extends AppCompatActivity {
                     for (int i = 0; i < size_of_readFolderList; i++){
                         try {
                             savedMusicPaths.add(Uri.parse(jsonArray.getString(i)));
+                            originalMusicPaths.add(Uri.parse(jsonArray.getString(i)));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -93,25 +96,46 @@ public class KaricoMotorActivity extends AppCompatActivity {
         music_dismiss.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Integer numberOfChanges = 0;
 
                 if (savedMusicPaths != null){
                     Integer size_of_savedpaths = savedMusicPaths.size();
                     if (size_of_savedpaths == size_of_readFolderList){
-                           String message = "Karico found that you added new folders to existing playlist " +
-                                   "Do you want to save changes?";
-                           Toast.makeText(KaricoMotorActivity.this, message, Toast.LENGTH_LONG).show();
+                        ArrayList<Uri> similarFolders = new ArrayList<>();
+                        for (int i = 0; i < savedMusicPaths.size(); i++){
+                             if (!originalMusicPaths.contains(savedMusicPaths.get(i))){
+                                 similarFolders.add(savedMusicPaths.get(i));
+                             }
+                        }
+                        if (similarFolders != null){
+                            if(similarFolders.size() > 0){
+                                numberOfChanges = similarFolders.size();
+                            }
+                            String message = "Karico found that you replaced " + numberOfChanges + " new folders to existing playlist.\n" +
+                                    "Do you want to save changes?";
+                            Toast.makeText(KaricoMotorActivity.this, message, Toast.LENGTH_LONG).show();
+                            saveFolderList(savedMusicPaths);
+                            finish();
+                        }
+                        finish();
+
                     } else if (size_of_savedpaths > size_of_readFolderList) {
-                        String message = "Karico found that you added new folders to existing playlist, " +
+                        numberOfChanges = savedMusicPaths.size() - originalMusicPaths.size();
+                        String message = "Karico found that you added " + numberOfChanges + " new folders to existing playlist.\n" +
                                 "Do you want to save changes?";
                         Toast.makeText(KaricoMotorActivity.this, message, Toast.LENGTH_LONG).show();
+                        saveFolderList(savedMusicPaths);
+                        finish();
                     } else if (size_of_savedpaths < size_of_readFolderList) {
-                        String message = "Karico found that you deleted some folder list from existing playlist" +
+                        numberOfChanges = originalMusicPaths.size() - savedMusicPaths.size();
+                        String message = "Karico found that you deleted " + numberOfChanges +" folder(s) from existing playlist.\n" +
                                 "Do you want to save changes?";
                         Toast.makeText(KaricoMotorActivity.this, message, Toast.LENGTH_LONG).show();
+                        saveFolderList(savedMusicPaths);
+                        finish();
+
                     }
                 }
-                saveFolderList(savedMusicPaths);
-                finish();
             }
         });
 
@@ -121,8 +145,6 @@ public class KaricoMotorActivity extends AppCompatActivity {
                 Intent open_chooser = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
                 open_chooser.addCategory(Intent.CATEGORY_DEFAULT);
                 open_chooser.putExtra("android.content.extra.SHOW_FILESIZE", true);
-//                open_chooser.setAction(Intent.ACTION_GET_CONTENT);
-//                open_chooser.setType("file/*");
                 startActivityForResult(Intent.createChooser(open_chooser, "Choose Directory"), REQUEST_CODE);
             }
         });
