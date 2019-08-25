@@ -29,7 +29,7 @@ public class KaricoAlertDialog {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        karicoMotorActivity.saveFolderList(musicContent);
+//                        karicoMotorActivity.saveFolderList(musicContent);
                     }
                 }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override

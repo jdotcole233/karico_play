@@ -15,24 +15,19 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.ultitrust.karico.Adapter.KaricoMusicAdapater;
-import com.ultitrust.karico.Model.KaricoAlertDialog;
 import com.ultitrust.karico.Model.MusicModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.ultitrust.karico.Adapter.KaricoContracts.MUSIC_SAVED_NAME;
@@ -78,14 +73,15 @@ public class KaricoMotorActivity extends AppCompatActivity {
 
         if (readFolders != null){
             if(!readFolders.isEmpty()){
-                JSONArray jsonArray = folderListContent(readFolders);
+                JSONArray jsonArray =  folderListContent(readFolders);
                 if (jsonArray != null) {
                     size_of_readFolderList = jsonArray.length();
                     for (int i = 0; i < size_of_readFolderList; i++){
                         try {
-                            savedMusicPaths.add(Uri.parse(jsonArray.getString(i)));
-                            originalMusicPaths.add(Uri.parse(jsonArray.getString(i)));
-                        } catch (JSONException e) {
+                            Log.i("Karico", "check " + Uri.decode(jsonArray.getString(i)) + "");
+                            savedMusicPaths.add(Uri.parse(Uri.decode(jsonArray.getString(i))));
+                            originalMusicPaths.add(Uri.parse(Uri.decode(jsonArray.getString(i))));
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
@@ -95,15 +91,18 @@ public class KaricoMotorActivity extends AppCompatActivity {
             }
         }
 
+        loadMusic(savedMusicPaths);
+        Log.i("Karico", savedMusicPaths.size() + "");
+
 
         music_dismiss.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Integer numberOfChanges = 0;
-
                 if (savedMusicPaths != null){
                     Integer size_of_savedpaths = savedMusicPaths.size();
-                    if (size_of_savedpaths == size_of_readFolderList){
+
+                    if (size_of_savedpaths == size_of_readFolderList && size_of_savedpaths !=0 ){
                         ArrayList<Uri> similarFolders = new ArrayList<>();
                         for (int i = 0; i < savedMusicPaths.size(); i++){
                              if (!originalMusicPaths.contains(savedMusicPaths.get(i))){
@@ -130,6 +129,8 @@ public class KaricoMotorActivity extends AppCompatActivity {
                         String message = "Karico found that you deleted " + numberOfChanges +" folder(s) from existing playlist.\n" +
                                 "Do you want to save changes?";
                         createDialog(message);
+                    } else {
+                        finish();
                     }
                 }
             }
@@ -152,7 +153,6 @@ public class KaricoMotorActivity extends AppCompatActivity {
             case REQUEST_CODE:
 
                 if (savedMusicPaths != null){
-                    loadMusic(savedMusicPaths);
                     DocumentFile isDirecotyFilePath = DocumentFile.fromTreeUri(this, data.getData());
                     if (isDirecotyFilePath.isDirectory()){
                         if (folderExists(savedMusicPaths, isDirecotyFilePath.getName())){
@@ -160,6 +160,8 @@ public class KaricoMotorActivity extends AppCompatActivity {
                             return;
                         }
                         savedMusicPaths.add(data.getData());
+                        loadMusic(savedMusicPaths);
+
                     } else {
                         Toast.makeText(this,"Sorry, you cannot add single files, add a directory", Toast.LENGTH_LONG).show();
                         return;
@@ -185,7 +187,7 @@ public class KaricoMotorActivity extends AppCompatActivity {
                 }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                finish();
             }
         });
         AlertDialog alertDialog1 = alertDialog.create();
@@ -198,15 +200,22 @@ public class KaricoMotorActivity extends AppCompatActivity {
     }
 
 
-    public boolean saveFolderList(ArrayList<Uri> save_musiclist){
+    public void saveFolderList(ArrayList<Uri> save_musiclist){
         SharedPreferences sharedPreferences =  getSharedPreferences(MUSIC_SAVED_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String music_save_json = gson.toJson(save_musiclist);
-        Log.i("Karico", music_save_json);
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.setPrettyPrinting().create();
+        ArrayList<String> a = new ArrayList<>();
+        for (Uri uri : save_musiclist) {
+             a.add(Uri.encode(uri.toString()));
+        }
+        String music_save_json = gson.toJson(a);
+
+        Log.i("Karico", "saved folder log1 " + save_musiclist);
+        Log.i("Karico", "saved folder log " + music_save_json);
         editor.putString("KARICO_SAVED", music_save_json);
 
-        return editor.commit();
+        editor.apply();
     }
 
 
@@ -221,10 +230,12 @@ public class KaricoMotorActivity extends AppCompatActivity {
         JSONArray jsonArray = null;
         try {
             jsonArray = new JSONArray(readFolderList);
-            Log.i("Karico", jsonArray.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
+//        Gson gson = new Gson();
+//        Type type = new TypeToken<ArrayList<Uri>>() {}.getType();
+//        jsonArray = gson.fromJson(readFolderList, type);
 
         return jsonArray;
     }
@@ -237,9 +248,10 @@ public class KaricoMotorActivity extends AppCompatActivity {
             if (musicpaths.size() == 0){
                 Toast.makeText(this, "No Music to be loaded yet", Toast.LENGTH_LONG).show();
                 return;
-            } else {
+            } else if (musicpaths.size() > 0) {
                 for (Uri uri : musicpaths) {
-                    DocumentFile documentsFromURIs = DocumentFile.fromTreeUri(this,uri);
+                    Log.i("Karico", "Decoding " + uri);
+                    DocumentFile documentsFromURIs = DocumentFile.fromTreeUri(this, uri);
 
                     if (documentsFromURIs.isDirectory()){
                         for (DocumentFile file : documentsFromURIs.listFiles()){
