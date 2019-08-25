@@ -42,6 +42,8 @@ public class KaricoMotorActivity extends AppCompatActivity {
     private ArrayList<Uri> savedMusicPaths;
     private ArrayList<Uri> originalMusicPaths;
     private int size_of_readFolderList;
+    private ArrayList<Uri> similarFolders;
+
 
 
     @Override
@@ -53,6 +55,7 @@ public class KaricoMotorActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.music_list_display);
         savedMusicPaths = new ArrayList<>();
         originalMusicPaths = new ArrayList<>();
+        similarFolders = new ArrayList<>();
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
@@ -101,10 +104,8 @@ public class KaricoMotorActivity extends AppCompatActivity {
                 Integer numberOfChanges = 0;
                 if (savedMusicPaths != null){
                     Integer size_of_savedpaths = savedMusicPaths.size();
-
                     if (size_of_savedpaths == size_of_readFolderList && size_of_savedpaths !=0 ){
-                        ArrayList<Uri> similarFolders = new ArrayList<>();
-                        for (int i = 0; i < savedMusicPaths.size(); i++){
+                        for (int i = 0; i < size_of_savedpaths; i++){
                              if (!originalMusicPaths.contains(savedMusicPaths.get(i))){
                                  similarFolders.add(savedMusicPaths.get(i));
                              }
@@ -113,10 +114,12 @@ public class KaricoMotorActivity extends AppCompatActivity {
                             if(similarFolders.size() > 0){
                                 numberOfChanges = similarFolders.size();
                             }
+                            for (int j = 0; j < similarFolders.size(); j++){
+                                Log.i("Karico", "Similar " + similarFolders.get(j));
+                            }
                             String message = "Karico found that you replaced " + numberOfChanges + " new folders to existing playlist.\n" +
                                     "Do you want to save changes?";
                             createDialog(message);
-
                         }
 
                     } else if (size_of_savedpaths > size_of_readFolderList) {
@@ -155,8 +158,8 @@ public class KaricoMotorActivity extends AppCompatActivity {
                 if (savedMusicPaths != null){
                     DocumentFile isDirecotyFilePath = DocumentFile.fromTreeUri(this, data.getData());
                     if (isDirecotyFilePath.isDirectory()){
-                        if (folderExists(savedMusicPaths, isDirecotyFilePath.getName())){
-                            Toast.makeText(this, "Found a folder with the same name in existing list", Toast.LENGTH_LONG).show();
+                        if (folderExists(savedMusicPaths, data.getData())){
+                            Toast.makeText(this, "Found a folder with the same name in existing category", Toast.LENGTH_LONG).show();
                             return;
                         }
                         savedMusicPaths.add(data.getData());
@@ -195,7 +198,7 @@ public class KaricoMotorActivity extends AppCompatActivity {
     }
 
 
-    public boolean folderExists(ArrayList<Uri> musiclist, String foldername){
+    public boolean folderExists(ArrayList<Uri> musiclist, Uri foldername){
         return (musiclist.contains(foldername)) ? true : false;
     }
 
@@ -256,11 +259,11 @@ public class KaricoMotorActivity extends AppCompatActivity {
                     if (documentsFromURIs.isDirectory()){
                         for (DocumentFile file : documentsFromURIs.listFiles()){
                             if (file.isFile()){
-                                if (file.getType().equals("audio/*")){
+                                if (file.getType().equals("audio/mpeg")){
+                                    size++;
                                 }
                             }
-                            size++;
-                            Log.i("Karico", file.getName() + " " + file.length());
+                            Log.i("Karico", "folder content karico " + file.getType() + " " + file.length());
                         }
 
                         if (size == 0){
