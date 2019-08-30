@@ -3,6 +3,7 @@ package com.ultitrust.karico.Adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +21,13 @@ public class KaricoMusicAdapater extends RecyclerView.Adapter<KaricoMusicAdapate
 
     private List<MusicModel> musicModels;
     private Context context;
+    private RecyclerView recyclerView;
 
-    public KaricoMusicAdapater(List<MusicModel> musicModels, Context context) {
+    public KaricoMusicAdapater(List<MusicModel> musicModels, Context context, RecyclerView recyclerView) {
         this.musicModels = musicModels;
         this.context = context;
+        this.recyclerView = recyclerView;
+        Log.i("Karico", musicModels.size() + "");
     }
 
     @Override
@@ -41,7 +45,13 @@ public class KaricoMusicAdapater extends RecyclerView.Adapter<KaricoMusicAdapate
             myViewHolder.remove_folder_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "Folder clicked " + musicModels.get(i).getFolder_name(), Toast.LENGTH_LONG).show();
+//                    if (musicModels.size() > 0){
+                        musicModels.remove(i);
+//                        recyclerView.getAdapter().notifyItemRemoved(i);
+                        recyclerView.getAdapter().notifyItemRangeRemoved(i, musicModels.size());
+//                        recyclerView.getAdapter().notifyDataSetChanged();
+                        Toast.makeText(context, "Folder clicked " + i + " " + musicModels.get(i).getFolder_name(), Toast.LENGTH_LONG).show();
+//                    }
                 }
             });
     }

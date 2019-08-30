@@ -43,6 +43,8 @@ public class KaricoMotorActivity extends AppCompatActivity {
     private ArrayList<Uri> originalMusicPaths;
     private int size_of_readFolderList;
     private ArrayList<Uri> similarFolders;
+    private ArrayList<Uri> recycleFolders;
+    private Integer size_of_savedpaths;
 
 
 
@@ -64,30 +66,29 @@ public class KaricoMotorActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
         musicModels = new ArrayList<>();
-
-        if (musicModels != null){
-            recyclerViewAdapter = new KaricoMusicAdapater(musicModels, this);
-            recyclerView.setAdapter(recyclerViewAdapter);
-        }
-
+        recycleFolders = new ArrayList<>();
+        recyclerViewAdapter = new KaricoMusicAdapater(musicModels, this, recyclerView);
+        recyclerView.setAdapter(recyclerViewAdapter);
 
 
         String readFolders = readSavedFolderList();
-
         if (readFolders != null){
             if(!readFolders.isEmpty()){
                 JSONArray jsonArray =  folderListContent(readFolders);
                 if (jsonArray != null) {
                     size_of_readFolderList = jsonArray.length();
+                    Log.i("Karico", size_of_readFolderList + " ACC");
+
                     for (int i = 0; i < size_of_readFolderList; i++){
                         try {
-                            Log.i("Karico", "check " + Uri.decode(jsonArray.getString(i)) + "");
                             savedMusicPaths.add(Uri.parse(Uri.decode(jsonArray.getString(i))));
                             originalMusicPaths.add(Uri.parse(Uri.decode(jsonArray.getString(i))));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
+                    Log.i("Karico", savedMusicPaths.size() + " SAC");
+
                 }
             } else {
                 size_of_readFolderList = 0;
@@ -95,15 +96,14 @@ public class KaricoMotorActivity extends AppCompatActivity {
         }
 
         loadMusic(savedMusicPaths);
-        Log.i("Karico", savedMusicPaths.size() + "");
-
+        Log.i("Karico", musicModels.size() + "M " + size_of_readFolderList);
 
         music_dismiss.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Integer numberOfChanges = 0;
                 if (savedMusicPaths != null){
-                    Integer size_of_savedpaths = savedMusicPaths.size();
+                    size_of_savedpaths = musicModels.size();
                     if (size_of_savedpaths == size_of_readFolderList && size_of_savedpaths !=0 ){
                         for (int i = 0; i < size_of_savedpaths; i++){
                              if (!originalMusicPaths.contains(savedMusicPaths.get(i))){
@@ -113,22 +113,21 @@ public class KaricoMotorActivity extends AppCompatActivity {
                         if (similarFolders != null){
                             if(similarFolders.size() > 0){
                                 numberOfChanges = similarFolders.size();
+                                String message = "Karico found that you replaced " + numberOfChanges + " new folders to existing playlist.\n" +
+                                        "Do you want to save changes?";
+                                createDialog(message);
+                            } else {
+                                finish();
                             }
-                            for (int j = 0; j < similarFolders.size(); j++){
-                                Log.i("Karico", "Similar " + similarFolders.get(j));
-                            }
-                            String message = "Karico found that you replaced " + numberOfChanges + " new folders to existing playlist.\n" +
-                                    "Do you want to save changes?";
-                            createDialog(message);
                         }
 
                     } else if (size_of_savedpaths > size_of_readFolderList) {
-                        numberOfChanges = savedMusicPaths.size() - originalMusicPaths.size();
+                        numberOfChanges = size_of_savedpaths - originalMusicPaths.size();
                         String message = "Karico found that you added " + numberOfChanges + " new folders to existing playlist.\n" +
                                 "Do you want to save changes?";
                         createDialog(message);
                     } else if (size_of_savedpaths < size_of_readFolderList) {
-                        numberOfChanges = originalMusicPaths.size() - savedMusicPaths.size();
+                        numberOfChanges = size_of_readFolderList - size_of_savedpaths;
                         String message = "Karico found that you deleted " + numberOfChanges +" folder(s) from existing playlist.\n" +
                                 "Do you want to save changes?";
                         createDialog(message);
@@ -150,10 +149,18 @@ public class KaricoMotorActivity extends AppCompatActivity {
         });
     }
 
+
+    @Override
+    public void onBackPressed() {
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         switch (requestCode) {
             case REQUEST_CODE:
+
+                long _folderSizeInMB = (long) 0.0;
 
                 if (savedMusicPaths != null){
                     DocumentFile isDirecotyFilePath = DocumentFile.fromTreeUri(this, data.getData());
@@ -162,8 +169,13 @@ public class KaricoMotorActivity extends AppCompatActivity {
                             Toast.makeText(this, "Found a folder with the same name in existing category", Toast.LENGTH_LONG).show();
                             return;
                         }
-                        savedMusicPaths.add(data.getData());
-                        loadMusic(savedMusicPaths);
+
+                        if (musicModels != null) {
+                            _folderSizeInMB = isDirecotyFilePath.length()/ 1024;
+                            musicModels.add(new MusicModel(isDirecotyFilePath.getName(), _folderSizeInMB + " MB -", 0 + " Songs"));
+                            savedMusicPaths.add(data.getData());
+                            recyclerViewAdapter.notifyDataSetChanged();
+                        }
 
                     } else {
                         Toast.makeText(this,"Sorry, you cannot add single files, add a directory", Toast.LENGTH_LONG).show();
@@ -209,15 +221,13 @@ public class KaricoMotorActivity extends AppCompatActivity {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.setPrettyPrinting().create();
         ArrayList<String> a = new ArrayList<>();
+
         for (Uri uri : save_musiclist) {
              a.add(Uri.encode(uri.toString()));
         }
+
         String music_save_json = gson.toJson(a);
-
-        Log.i("Karico", "saved folder log1 " + save_musiclist);
-        Log.i("Karico", "saved folder log " + music_save_json);
         editor.putString("KARICO_SAVED", music_save_json);
-
         editor.apply();
     }
 
@@ -236,16 +246,15 @@ public class KaricoMotorActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-//        Gson gson = new Gson();
-//        Type type = new TypeToken<ArrayList<Uri>>() {}.getType();
-//        jsonArray = gson.fromJson(readFolderList, type);
-
         return jsonArray;
     }
+
+
 
     public void loadMusic(ArrayList<Uri> musicpaths){
         int size = 0;
         long folderSizeInMB = (long) 0.0;
+        DocumentFile documentsFromURIs  = null;
 
         if (musicpaths != null){
             if (musicpaths.size() == 0){
@@ -253,35 +262,34 @@ public class KaricoMotorActivity extends AppCompatActivity {
                 return;
             } else if (musicpaths.size() > 0) {
                 for (Uri uri : musicpaths) {
-                    Log.i("Karico", "Decoding " + uri);
-                    DocumentFile documentsFromURIs = DocumentFile.fromTreeUri(this, uri);
+                     documentsFromURIs = DocumentFile.fromTreeUri(this, uri);
+                    if (documentsFromURIs.exists()){
+                        if (documentsFromURIs.isDirectory()){
+//                            for (DocumentFile file : documentsFromURIs.listFiles()){
+//                                if (file.isFile()){
+//                                    if (file.getType().equals("audio/mpeg")){
+//                                        size++;
+//                                    }
+//                                }
+//                                Log.i("Karico", "folder content karico " + file.getType() + " " + file.length());
+//                            }
+                            if (musicModels != null){
+                                folderSizeInMB = documentsFromURIs.length() /1024;
+                                musicModels.add(new MusicModel(documentsFromURIs.getName(), folderSizeInMB + " MB -", size + " Songs"));
+                                recyclerViewAdapter.notifyDataSetChanged();
+                                Log.i("Karico", musicModels.size() + "A");
 
-                    if (documentsFromURIs.isDirectory()){
-                        for (DocumentFile file : documentsFromURIs.listFiles()){
-                            if (file.isFile()){
-                                if (file.getType().equals("audio/mpeg")){
-                                    size++;
-                                }
                             }
-                            Log.i("Karico", "folder content karico " + file.getType() + " " + file.length());
-                        }
-
-                        if (size == 0){
-                            Toast.makeText(this, "You are attempting to add empty music directory", Toast.LENGTH_LONG).show();
+                        } else if (documentsFromURIs.isFile()){
+                            Toast.makeText(this,"Sorry, you cannot add single files, add a directory", Toast.LENGTH_LONG).show();
                             return;
                         }
-
-                        if (musicModels != null){
-                            folderSizeInMB = documentsFromURIs.length() /1024;
-                            musicModels.add(new MusicModel(documentsFromURIs.getName(), folderSizeInMB + " MB -", size + " Songs"));
-                            recyclerViewAdapter.notifyDataSetChanged();
-                        }
-                    } else if (documentsFromURIs.isFile()){
-                        Toast.makeText(this,"Sorry, you cannot add single files, add a directory", Toast.LENGTH_LONG).show();
-                        return;
                     }
+//                    if (size == 0){
+//                        Toast.makeText(this, "You are attempting to add empty music directory", Toast.LENGTH_LONG).show();
+//                        return;
+//                    }
                 }
-
             }
         }
 
