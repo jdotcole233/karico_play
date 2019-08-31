@@ -10,6 +10,7 @@
     android:background="@drawable/music_row_background"
     android:backgroundTint="#ffffff"
     android:layout_marginTop="5dp"
+    android:id="@+id/selectFolderCard"
     >
 
     <ImageView

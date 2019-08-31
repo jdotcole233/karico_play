@@ -172,7 +172,7 @@ public class KaricoMotorActivity extends AppCompatActivity {
 
                         if (musicModels != null) {
                             _folderSizeInMB = isDirecotyFilePath.length()/ 1024;
-                            musicModels.add(new MusicModel(isDirecotyFilePath.getName(), _folderSizeInMB + " MB -", 0 + " Songs"));
+                            musicModels.add(new MusicModel(isDirecotyFilePath.getName(), _folderSizeInMB + " MB -", 0 + " Songs", data.getData()));
                             savedMusicPaths.add(data.getData());
                             recyclerViewAdapter.notifyDataSetChanged();
                         }
@@ -275,9 +275,8 @@ public class KaricoMotorActivity extends AppCompatActivity {
 //                            }
                             if (musicModels != null){
                                 folderSizeInMB = documentsFromURIs.length() /1024;
-                                musicModels.add(new MusicModel(documentsFromURIs.getName(), folderSizeInMB + " MB -", size + " Songs"));
+                                musicModels.add(new MusicModel(documentsFromURIs.getName(), folderSizeInMB + " MB -", size + " Songs", uri));
                                 recyclerViewAdapter.notifyDataSetChanged();
-                                Log.i("Karico", musicModels.size() + "A");
 
                             }
                         } else if (documentsFromURIs.isFile()){
@@ -290,6 +289,8 @@ public class KaricoMotorActivity extends AppCompatActivity {
 //                        return;
 //                    }
                 }
+                Log.i("Karico", musicModels.size() + "A");
+
             }
         }
 

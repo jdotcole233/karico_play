@@ -17,6 +17,7 @@
         >
 
         <ImageButton
+            android:id="@+id/playerbackbtn"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/ic_arrow_back_black_24dp"
@@ -32,7 +33,7 @@
         >
 
         <ImageButton
-            android:id="@+id/upperleftButton"
+            android:id="@+id/upperleftplayerButton"
             android:layout_width="195dp"
             android:layout_height="290dp"
             android:src="@drawable/icons_fast_forward"
@@ -45,7 +46,7 @@
             />
 
         <ImageButton
-            android:id="@+id/button2"
+            android:id="@+id/upperrightplayerButton"
             android:layout_width="195dp"
             android:layout_height="290dp"
             android:layout_alignParentRight="true"
@@ -59,7 +60,7 @@
             />
 
         <ImageButton
-            android:id="@+id/button3"
+            android:id="@+id/lowerleftplayerButton"
             android:layout_width="195dp"
             android:layout_height="290dp"
             android:layout_alignParentBottom="true"
@@ -73,7 +74,7 @@
             />
 
         <ImageButton
-            android:id="@+id/button4"
+            android:id="@+id/lowerrightplayerButton"
             android:layout_width="195dp"
             android:layout_height="290dp"
             android:layout_alignParentRight="true"
@@ -88,7 +89,7 @@
             />
 
         <ImageButton
-            android:id="@+id/button5"
+            android:id="@+id/centerplayerButton"
             android:layout_width="250dp"
             android:layout_height="250dp"
             android:src="@drawable/icons_play"
