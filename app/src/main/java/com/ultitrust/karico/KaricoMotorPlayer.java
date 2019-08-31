@@ -25,7 +25,7 @@ public class KaricoMotorPlayer extends AppCompatActivity {
     private ArrayList<Uri> musicList;
     private MediaPlayer mediaPlayer;
     private Uri musicPathUri;
-    private Integer position;
+    private Integer position, playerNumber;
     private boolean isActive;
 
     @Override
@@ -54,13 +54,26 @@ public class KaricoMotorPlayer extends AppCompatActivity {
         playerBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                if (isActive){
+                    stopMusic(mediaPlayer);
+                    isActive = false;
+                    finish();
+                } else {
+                    finish();
+                }
             }
         });
 
         upperLeftPlayerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try {
+                    resetPlayerButton(playerNumber);
+                    playerNumber = 5;
+                    playerButtonsHandler(upperLeftPlayerBtn);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 Toast.makeText(KaricoMotorPlayer.this, "Upper Left Button  Tapped", Toast.LENGTH_LONG).show();
             }
         });
@@ -69,6 +82,13 @@ public class KaricoMotorPlayer extends AppCompatActivity {
         upperRightPlayerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try {
+                    resetPlayerButton(playerNumber);
+                    playerNumber = 4;
+                    playerButtonsHandler(upperRightPlayerBtn);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 Toast.makeText(KaricoMotorPlayer.this, "Upper Right Button Tapped", Toast.LENGTH_LONG).show();
             }
         });
@@ -76,6 +96,14 @@ public class KaricoMotorPlayer extends AppCompatActivity {
         lowerLeftPlayerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try {
+
+                    resetPlayerButton(playerNumber);
+                    playerNumber = 3;
+                    playerButtonsHandler(lowerLeftPlayerBtn);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 Toast.makeText(KaricoMotorPlayer.this, "Lower Left Button Tapped", Toast.LENGTH_LONG).show();
             }
         });
@@ -84,6 +112,13 @@ public class KaricoMotorPlayer extends AppCompatActivity {
         lowerRightPlayerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try {
+                    resetPlayerButton(playerNumber);
+                    playerNumber = 2;
+                    playerButtonsHandler(lowerRightPlayerBtn);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 Toast.makeText(KaricoMotorPlayer.this, "Lower Right Button Tapped", Toast.LENGTH_LONG).show();
             }
         });
@@ -92,7 +127,13 @@ public class KaricoMotorPlayer extends AppCompatActivity {
         centerPlayerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                try {
+                    resetPlayerButton(playerNumber);
+                    playerNumber = 1;
+                    playerButtonsHandler(centerPlayerBtn);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 Toast.makeText(KaricoMotorPlayer.this, "Center Tapped", Toast.LENGTH_LONG).show();
             }
         });
@@ -115,22 +156,57 @@ public class KaricoMotorPlayer extends AppCompatActivity {
 
     }
 
-    public void sd (ImageButton playerButton) throws IOException {
-        prepareMusicPlayer(musicList.get(position));
+    public void playerButtonsHandler (ImageButton playerButton) throws IOException {
         if (musicList != null) {
+
+            if (position < musicList.size()) {
+                prepareMusicPlayer(musicList.get(position));
+            }
+
             if (playerButton != null) {
                 if(playerButton.getDrawable().equals(R.drawable.icons_play)) {
-                    if (musicList.size() > 0){
-                        if (playMusic(mediaPlayer)){
+                    if (musicList.size() > 0 || position < musicList.size()){
+                        if (playMusic(mediaPlayer)) {
                             isActive = true;
                             position = position + 1;
                             playerButton.setImageResource(R.drawable.icons_pause);
+                        } else {
+                            isActive = false;
+                            playerButton.setImageResource(R.drawable.icons_play);
                         }
+                    } else {
+                        Toast.makeText(this, "Loading music", Toast.LENGTH_LONG).show();
                     }
                 } else if (playerButton.getDrawable().equals(R.drawable.icons_pause)) {
-
+                    if (pauseMusic(mediaPlayer)) {
+                        isActive = false;
+                        playerButton.setImageResource(R.drawable.icons_play);
+                    }
                 }
             }
+        }
+    }
+
+
+    public void resetPlayerButton(int playerNumber) {
+        switch (playerNumber) {
+            case 1:
+                centerPlayerBtn.setImageResource(R.drawable.icons_play);
+                break;
+            case 2:
+                lowerRightPlayerBtn.setImageResource(R.drawable.icons_play);
+                break;
+            case 3:
+                lowerLeftPlayerBtn.setImageResource(R.drawable.icons_play);
+                break;
+            case 4:
+                upperRightPlayerBtn.setImageResource(R.drawable.icons_play);
+                break;
+            case 5:
+                upperLeftPlayerBtn.setImageResource(R.drawable.icons_play);
+                break;
+            default:
+                return;
         }
     }
 
