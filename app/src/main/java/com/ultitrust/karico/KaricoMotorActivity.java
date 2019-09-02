@@ -161,27 +161,29 @@ public class KaricoMotorActivity extends AppCompatActivity {
             case REQUEST_CODE:
 
                 long _folderSizeInMB = (long) 0.0;
+                if (data != null){
+                    if (savedMusicPaths != null){
+                        DocumentFile isDirecotyFilePath = DocumentFile.fromTreeUri(this, data.getData());
+                        if (isDirecotyFilePath.isDirectory()){
+                            if (folderExists(savedMusicPaths, data.getData())){
+                                Toast.makeText(this, "Found a folder with the same name in existing category", Toast.LENGTH_LONG).show();
+                                return;
+                            }
 
-                if (savedMusicPaths != null){
-                    DocumentFile isDirecotyFilePath = DocumentFile.fromTreeUri(this, data.getData());
-                    if (isDirecotyFilePath.isDirectory()){
-                        if (folderExists(savedMusicPaths, data.getData())){
-                            Toast.makeText(this, "Found a folder with the same name in existing category", Toast.LENGTH_LONG).show();
+                            if (musicModels != null) {
+                                _folderSizeInMB = isDirecotyFilePath.length()/ 1024;
+                                musicModels.add(new MusicModel(isDirecotyFilePath.getName(), _folderSizeInMB + " MB -", 0 + " Songs", data.getData()));
+                                savedMusicPaths.add(data.getData());
+                                recyclerViewAdapter.notifyDataSetChanged();
+                            }
+
+                        } else {
+                            Toast.makeText(this,"Sorry, you cannot add single files, add a directory", Toast.LENGTH_LONG).show();
                             return;
                         }
-
-                        if (musicModels != null) {
-                            _folderSizeInMB = isDirecotyFilePath.length()/ 1024;
-                            musicModels.add(new MusicModel(isDirecotyFilePath.getName(), _folderSizeInMB + " MB -", 0 + " Songs", data.getData()));
-                            savedMusicPaths.add(data.getData());
-                            recyclerViewAdapter.notifyDataSetChanged();
-                        }
-
-                    } else {
-                        Toast.makeText(this,"Sorry, you cannot add single files, add a directory", Toast.LENGTH_LONG).show();
-                        return;
                     }
                 }
+
 
                 break;
 
