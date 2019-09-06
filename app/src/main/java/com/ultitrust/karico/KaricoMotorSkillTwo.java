@@ -62,9 +62,13 @@ public class KaricoMotorSkillTwo extends AppCompatActivity {
                     if (karicoPlayerEn.getMediaPlayer().isPlaying()) {
                         karicoPlayerEn.stopMusic();
                         finish();
+                    } else {
+                        Log.i("Karico", "check something went wrong");
+                        finish();
                     }
                 } else {
                     Log.i("Karico", "check something went wrong");
+                    finish();
                 }
             }
         });
