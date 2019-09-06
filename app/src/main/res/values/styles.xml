@@ -7,6 +7,10 @@
         <item name="colorPrimaryDark">#1FA5E2</item>
         <item name="colorAccent">#1FA5E2</item>
     </style>
-    
+
+    <style name="AppTheme.InstructionCustomTheme" parent="Theme.AppCompat.Light.NoActionBar" >
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside" >true</item>
+    </style>
 
 </resources>

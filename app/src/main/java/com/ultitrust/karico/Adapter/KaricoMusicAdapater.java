@@ -1,5 +1,6 @@
 package com.ultitrust.karico.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ultitrust.karico.KaricoMotorPlayer;
+import com.ultitrust.karico.KaricoSkillsLevels;
 import com.ultitrust.karico.Model.MusicModel;
 import com.ultitrust.karico.R;
 
@@ -50,29 +52,21 @@ public class KaricoMusicAdapater extends RecyclerView.Adapter<KaricoMusicAdapate
             myViewHolder.remove_folder_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    int position = i;
-//                    if (musicModels.size() == i){
-//                        position = position - 1;
-//                    }
-//
                     musicModels.remove(i);
                     recyclerView.getAdapter().notifyItemRemoved(i);
-//                        recyclerView.getAdapter().notifyItemRangeRemoved(i, musicModels.size());
-                        recyclerView.getAdapter().notifyDataSetChanged();
-                    Toast.makeText(context, "Folder clicked " + i + " " + musicModels.get(i).getFolder_name(), Toast.LENGTH_LONG).show();
+                    recyclerView.getAdapter().notifyDataSetChanged();
+//                    Toast.makeText(context, "Folder clicked " + i + " " + musicModels.get(i).getFolder_name(), Toast.LENGTH_LONG).show();
                 }
             });
 
             myViewHolder.relativeLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    Toast.makeText(context, "Clicked " + i, Toast.LENGTH_LONG).show();
-                    Intent playerIntent = new Intent(context.getApplicationContext(), KaricoMotorPlayer.class);
+                    Intent playerIntent = new Intent(context.getApplicationContext(), KaricoSkillsLevels.class);
                     String folderPath = Uri.encode(musicModels.get(i).getFolder_path().toString());
-                    Log.i("Karico", folderPath);
-                    Log.i("Karico", musicModels.get(i).getFolder_path() + "");
                     playerIntent.putExtra("folderPath",folderPath);
                     context.startActivity(playerIntent);
+
 
                 }
             });

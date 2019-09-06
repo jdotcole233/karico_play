@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".KaricoInstruction">
+
+    <RelativeLayout
+        android:id="@+id/instructionheader"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:background="#f58442"
+        >
+
+        <ImageButton
+            android:id="@+id/instructionbackbtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_close_black_24dp"
+            android:background="#f58442"
+            />
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/instructiondata"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/instructionheader"
+        android:padding="10dp"
+        android:weightSum="2"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/instruct_img_o"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/instruction"
+            android:textSize="16sp"
+            android:padding="10dp"
+            />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/continuebutton"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Continue"
+        android:textAllCaps="false"
+        android:layout_below="@+id/instructiondata"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:textColor="#ffffff"
+        android:background="@drawable/button_rounded_edges"
+        android:backgroundTint="#f58442"
+        />
+
+</RelativeLayout>

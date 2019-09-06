@@ -9,11 +9,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MusicRowView"></activity>
-        <activity android:name=".KaricoMotorPlayer"></activity>
-        <activity android:name=".KaricoMotorActivity"></activity>
-        <activity android:name=".KaricoMenuActivity"></activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".KaricoMotorSkillTwo"></activity>
+        <activity android:name=".KaricoSkillsLevels"
+            android:theme="@style/AppTheme.InstructionCustomTheme"
+
+            />
+        <activity android:name=".KaricoInstruction"
+            android:theme="@style/AppTheme.InstructionCustomTheme"
+
+            />
+        <activity android:name=".MusicRowView" />
+        <activity android:name=".KaricoMotorPlayer"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".KaricoMotorActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".KaricoMenuActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

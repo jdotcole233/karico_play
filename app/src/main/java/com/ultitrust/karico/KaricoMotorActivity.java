@@ -14,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -45,6 +46,7 @@ public class KaricoMotorActivity extends AppCompatActivity {
     private ArrayList<Uri> similarFolders;
     private ArrayList<Uri> recycleFolders;
     private Integer size_of_savedpaths;
+    private Button helpButton;
 
 
 
@@ -55,6 +57,7 @@ public class KaricoMotorActivity extends AppCompatActivity {
         music_dismiss = findViewById(R.id.musicdismissbtn);
         music_file_chooser = findViewById(R.id.musicfilechooser);
         recyclerView = findViewById(R.id.music_list_display);
+        helpButton = findViewById(R.id.helpButton);
         savedMusicPaths = new ArrayList<>();
         originalMusicPaths = new ArrayList<>();
         similarFolders = new ArrayList<>();
@@ -69,6 +72,8 @@ public class KaricoMotorActivity extends AppCompatActivity {
         recycleFolders = new ArrayList<>();
         recyclerViewAdapter = new KaricoMusicAdapater(musicModels, this, recyclerView);
         recyclerView.setAdapter(recyclerViewAdapter);
+
+
 
 
         String readFolders = readSavedFolderList();
@@ -97,6 +102,17 @@ public class KaricoMotorActivity extends AppCompatActivity {
 
         loadMusic(savedMusicPaths);
         Log.i("Karico", musicModels.size() + "M " + size_of_readFolderList);
+
+
+
+        helpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(KaricoMotorActivity.this, KaricoInstruction.class);
+                intent.putExtra("KaricoMotor", "KaricoMotorActivity");
+                startActivity(intent);
+            }
+        });
 
         music_dismiss.setOnClickListener(new View.OnClickListener() {
             @Override

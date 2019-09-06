@@ -35,6 +35,7 @@ public class KaricoMotorPlayer extends AppCompatActivity {
     private boolean isActive;
     boolean isPlaying = false;
     boolean isPaused = false;
+    private MusicState musicState;
 
 
     @Override
@@ -54,12 +55,17 @@ public class KaricoMotorPlayer extends AppCompatActivity {
         lowerLeftPlayerBtn.setTag(R.drawable.icons_play);
         lowerRightPlayerBtn.setTag(R.drawable.icons_play);
         centerPlayerBtn.setTag(R.drawable.icons_play);
-        musicStates = new MusicState[4];
+        musicStates = new MusicState[5];
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioAttributes(new AudioAttributes
                 .Builder()
                 .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                 .build());
+        musicStates[0] = new MusicState(-1, null, 0, 0);
+        musicStates[1] = new MusicState(-1, null, 0, 0);
+        musicStates[2] = new MusicState(-1, null, 0, 0);
+        musicStates[3] = new MusicState(-1, null, 0, 0);
+        musicStates[4] = new MusicState(-1, null, 0, 0);
 
 
         musicList = new ArrayList<>();
@@ -69,7 +75,7 @@ public class KaricoMotorPlayer extends AppCompatActivity {
 
 
         Intent folderUri = getIntent();
-        String musicPathStringUri = folderUri.getStringExtra("folderPath");
+        String musicPathStringUri = folderUri.getStringExtra("primaryMotorFolderPath");
         musicPathUri = Uri.parse(Uri.decode(musicPathStringUri));
         Log.i("Karico", musicPathUri + "");
 
@@ -188,29 +194,24 @@ public class KaricoMotorPlayer extends AppCompatActivity {
 
     }
 
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void playerButtonsHandler (Integer buttonIdentNumber, ImageButton playerButton) throws IOException {
             if (musicList != null) {
                 if (position < musicList.size()) {
-                    Log.i("Karico", "L123 " + musicStates.length);
-                    if (musicStates.length > 0) {
-                        Log.i("Karico", "L12 " + buttonIdentNumber);
-
-                            if (musicStates[buttonIdentNumber] == null) {
-                                Log.i("Karico", "L123 " + buttonIdentNumber);
-                                if (musicStates[buttonIdentNumber].getMusiccurrentPosition() == musicStates[buttonIdentNumber].getMusicDuration()){
-                                    Log.i("Karico", "L124 " + buttonIdentNumber);
-                                    musicStates[buttonIdentNumber] = null;
+                    if (musicStates[buttonIdentNumber].getMusicUri() != null) {
+                                Log.i("Karico", "L123 " + musicStates[buttonIdentNumber].getMusiccurrentPosition());
+                                for (int  i = 0; i < musicStates.length; i++){
+                                    Log.i("Karico", musicStates[i] + " in array");
                                 }
+                                    if (musicStates[buttonIdentNumber].getMusiccurrentPosition() == musicStates[buttonIdentNumber].getMusicDuration() &&
+                                    musicStates[buttonIdentNumber].getMusiccurrentPosition() != 0 ){
+                                        Log.i("Karico", "L124 " + buttonIdentNumber);
+                                        musicStates[buttonIdentNumber] = null;
+                                    }
                                 prepareMusicPlayer(musicStates[buttonIdentNumber].getMusicUri());
-                                Log.i("Karico", "L12 " + musicStates[buttonIdentNumber].getMusiccurrentPosition());
                                 mediaPlayer.seekTo(musicStates[buttonIdentNumber].getMusiccurrentPosition());
-                            } else {
-                            Log.i("Karico", "L123 else sle" + buttonIdentNumber);
-                            prepareMusicPlayer(musicList.get(position));
-                        }
                     } else {
-                        Log.i("Karico", "L123 else" + buttonIdentNumber);
                         prepareMusicPlayer(musicList.get(position));
                     }
                 }
@@ -221,15 +222,17 @@ public class KaricoMotorPlayer extends AppCompatActivity {
                             if (playMusic()) {
                                 isActive = true;
                                 Log.i("Karico", position + " number");
-//                                if (mediaPlayer.isPlaying()){
-//                                    MusicState musicState = new MusicState(buttonIdentNumber, musicList.get(position),
-//                                            mediaPlayer.getCurrentPosition(), 0);
-//                                    musicStates[buttonIdentNumber] = musicState;
-
-//                                }
-
+                                if (mediaPlayer != null){
+                                    if (mediaPlayer.isPlaying()){
+                                        if (musicStates[buttonIdentNumber] == null){
+                                            musicState = new MusicState(buttonIdentNumber, musicList.get(position),
+                                                    mediaPlayer.getCurrentPosition(), 0);
+                                            musicStates[buttonIdentNumber] = musicState;
+                                        }
+                                        position++;
+                                    }
+                                }
 //                                if (musicState.isInserted()) {
-//                                    position++;
 //                                    musicState.setInserted(false);
 //                                }
                                 playerButton.setImageResource(R.drawable.icons_pause);
@@ -247,7 +250,7 @@ public class KaricoMotorPlayer extends AppCompatActivity {
                         if (pauseMusic()) {
                             isActive = false;
                             isPaused = false;
-                            if (musicStates.length > 0){
+                            if (musicStates[buttonIdentNumber] != null){
                                 musicStates[buttonIdentNumber]
                                         .setMusiccurrentPosition(mediaPlayer.getCurrentPosition());
                             }
@@ -258,6 +261,8 @@ public class KaricoMotorPlayer extends AppCompatActivity {
                 }
             }
     }
+
+
 
 
     public void resetPlayerButton(int playerNumber) {
@@ -302,11 +307,11 @@ public class KaricoMotorPlayer extends AppCompatActivity {
 
     public boolean pauseMusic(){
         if(mediaPlayer != null){
-//            if (mediaPlayer.isPlaying()){
+            if (mediaPlayer.isPlaying()){
                 Log.i("Karico", "paused called ");
                 mediaPlayer.pause();
                 isPaused = true;
-//            }
+            }
         }
         return isPaused;
     }

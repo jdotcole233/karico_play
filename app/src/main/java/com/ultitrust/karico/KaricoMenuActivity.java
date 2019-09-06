@@ -1,6 +1,7 @@
 package com.ultitrust.karico;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -36,7 +37,11 @@ public class KaricoMenuActivity extends AppCompatActivity {
         motor_activity_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(KaricoMenuActivity.this, KaricoMotorActivity.class));
+                SharedPreferences sharedPreferences = getSharedPreferences("CONTINUE_BUTTON_CLICKED", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("continueButtonState", "continueClicked");
+                editor.apply();
+                startActivity(new Intent(KaricoMenuActivity.this, KaricoInstruction.class));
             }
         });
     }

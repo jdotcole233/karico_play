@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".KaricoMotorSkillTwo"
+    >
+
+    <RelativeLayout
+        android:id="@+id/intermediaryheader"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/menu_background"
+        >
+
+        <ImageButton
+            android:id="@+id/skillstwobackbtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_close_black_24dp"
+            android:background="@drawable/menu_background"
+            />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/intermediaryheader"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        >
+
+        <ImageButton
+            android:id="@+id/reverseBtn"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/icons_reverse"
+            android:elevation="13dp"
+            android:backgroundTint="#6c42f5"
+            android:background="@drawable/button_rounded_edges"
+
+            />
+
+        <ImageButton
+            android:id="@+id/playBtn"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/icons_play"
+            android:elevation="13dp"
+            android:backgroundTint="#c8f542"
+            android:background="@drawable/button_rounded_edges"
+
+            />
+        <ImageButton
+            android:id="@+id/forwardBtn"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/icons_fast_forward"
+            android:backgroundTint="#f542b3"
+            android:background="@drawable/button_rounded_edges"
+            android:elevation="13dp"
+
+            />
+    </LinearLayout>
+
+</RelativeLayout>

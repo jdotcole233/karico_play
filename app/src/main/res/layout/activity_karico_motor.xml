@@ -61,27 +61,45 @@
         android:textColor="#ffffff"
         />
 
-    <TextView
-        android:id="@+id/categorytext"
+    <RelativeLayout
+        android:id="@+id/playlistandhelpline"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="playlist"
-        android:textAlignment="textStart"
-        android:layout_gravity="start"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:textSize="20sp"
         android:layout_below="@+id/chooseoptiontext"
-        android:textColor="#ffffff"
-        />
+        android:padding="5dp"
+        >
+        <TextView
+            android:id="@+id/categorytext"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="Playlist"
+            android:textSize="20sp"
+            android:textColor="#ffffff"
+            android:gravity="center"
+            android:layout_marginLeft="20dp"
+            />
 
+        <Button
+            android:id="@+id/helpButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Help"
+            android:background="@drawable/button_rounded_edges"
+            android:backgroundTint="#f58442"
+            android:textColor="#ffffff"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:textAllCaps="false"
+
+            />
+    </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/music_list_display"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical"
-            android:layout_below="@+id/categorytext"
+            android:layout_below="@+id/playlistandhelpline"
             android:background="@drawable/music_row_background"
             android:backgroundTint="#73ffffff"
             android:layout_marginLeft="20dp"
