@@ -38,7 +38,7 @@
             android:layout_height="match_parent"
             android:src="@drawable/icons_reverse"
             android:elevation="13dp"
-            android:backgroundTint="#6c42f5"
+            android:backgroundTint="#fc6203"
             android:background="@drawable/button_rounded_edges"
 
             />
@@ -50,7 +50,7 @@
             android:layout_height="match_parent"
             android:src="@drawable/icons_play"
             android:elevation="13dp"
-            android:backgroundTint="#c8f542"
+            android:backgroundTint="#c6ff4a"
             android:background="@drawable/button_rounded_edges"
 
             />
@@ -60,7 +60,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:src="@drawable/icons_fast_forward"
-            android:backgroundTint="#f542b3"
+            android:backgroundTint="#fca103"
             android:background="@drawable/button_rounded_edges"
             android:elevation="13dp"
 

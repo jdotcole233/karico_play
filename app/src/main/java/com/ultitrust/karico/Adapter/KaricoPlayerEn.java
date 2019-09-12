@@ -79,11 +79,12 @@ public class KaricoPlayerEn {
             if (mediaPlayer.isPlaying()){
                 Log.i("Karico", "paused called ");
                 mediaPlayer.pause();
-                isPaused = true;
+                isPaused = false;
             }
         }
         return isPaused;
     }
+
 
     public boolean stopMusic(){
         boolean isStopped = false;
@@ -101,9 +102,17 @@ public class KaricoPlayerEn {
         if (mediaPlayer != null) {
             position = position + 1;
             Log.i("Karico", "forwarded");
+            if (isPlaying) {
+                setUpMusic(position);
+            }
         }
 
         return isforwarded;
+    }
+
+    public void setUpMusic(int currentPosition) throws IOException {
+        prepareMusicPlayer(musicList.get(currentPosition));
+        mediaPlayer.start();
     }
 
     public boolean reverseMusic() throws IOException {
@@ -112,10 +121,15 @@ public class KaricoPlayerEn {
             if (position > 0) {
                 position = position - 1;
                 Log.i("Karico", "reversed");
-
+                if (isPlaying) {
+                    setUpMusic(position);
+                }
             } else {
                 position = 0;
                 Log.i("Karico", "reversed 0");
+                if (isPlaying) {
+                    setUpMusic(position);
+                }
 
             }
             isreversed = true;
