@@ -27,15 +27,16 @@ import java.util.Objects;
 public class KaricoMotorPlayer extends AppCompatActivity {
 
     private ImageButton playerBackBtn, upperLeftPlayerBtn, upperRightPlayerBtn, lowerLeftPlayerBtn, lowerRightPlayerBtn, centerPlayerBtn;
-    private ArrayList<Uri> musicList;
+    private ArrayList<Uri> musicList, playerableList;
     private MusicState [] musicStates;
     private MediaPlayer mediaPlayer, mediaPlayerCenter, mediaPlayerRight, mediaPlayerLeft, mediaPlayerUpperRight, mediaPlayerUpperLeft;
     private Uri musicPathUri;
     private Integer position, playerNumber;
     private boolean isActive;
     boolean isPlaying = false;
-    boolean isPaused = false;
+    boolean isLoaded = false , isPaused = false;
     private MusicState musicState;
+    private final int EXPECTED_SIZE = 5;
 
 
     @Override
@@ -69,6 +70,7 @@ public class KaricoMotorPlayer extends AppCompatActivity {
 
 
         musicList = new ArrayList<>();
+        playerableList = new ArrayList<>();
         position = 0;
         playerNumber = -1;
         isActive = false;
@@ -180,6 +182,17 @@ public class KaricoMotorPlayer extends AppCompatActivity {
             public void run() {
                 loadMusic(musicPathUri);
                 Log.i("Karico", "Thread finished ");
+                int musicsize = musicList.size();
+
+                if (musicsize <= 0 ) {
+                    isLoaded = false;
+                    Log.i("Karico", "No tracks loaded Thread finished ");
+                } else {
+                    shuffleMusicForButtons(musicsize);
+                    isLoaded = true;
+                    Log.i("Karico", "Completed loading tracks Thread finished ");
+
+                }
 
             }
         });
@@ -194,9 +207,28 @@ public class KaricoMotorPlayer extends AppCompatActivity {
 
     }
 
+    public void shuffleMusicForButtons(int musiclistsize) {
+        int j = musiclistsize;
+        for (int i = 0; i < EXPECTED_SIZE; i++) {
+            j = j % musiclistsize;
+            playerableList.add(i, musicList.get(j));
+            j = j + 1;
+        }
+    }
+
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void playerButtonsHandler (Integer buttonIdentNumber, ImageButton playerButton) throws IOException {
+
+            if (playerableList != null){
+                if (playerableList.size() > 0) {
+
+                } else {
+                    //player list is empty
+                }
+            }
+
+
             if (musicList != null) {
                 if (position < musicList.size()) {
                     if (musicStates[buttonIdentNumber].getMusicUri() != null) {
