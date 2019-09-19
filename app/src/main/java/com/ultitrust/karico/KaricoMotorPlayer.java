@@ -28,6 +28,7 @@ public class KaricoMotorPlayer extends AppCompatActivity {
 
     private ImageButton playerBackBtn, upperLeftPlayerBtn, upperRightPlayerBtn, lowerLeftPlayerBtn, lowerRightPlayerBtn, centerPlayerBtn;
     private ArrayList<Uri> musicList, playerableList;
+    private ArrayList<MusicState> _musicStates;
     private MusicState [] musicStates;
     private MediaPlayer mediaPlayer, mediaPlayerCenter, mediaPlayerRight, mediaPlayerLeft, mediaPlayerUpperRight, mediaPlayerUpperLeft;
     private Uri musicPathUri;
@@ -71,6 +72,7 @@ public class KaricoMotorPlayer extends AppCompatActivity {
 
         musicList = new ArrayList<>();
         playerableList = new ArrayList<>();
+        _musicStates = new ArrayList<>();
         position = 0;
         playerNumber = -1;
         isActive = false;
@@ -221,77 +223,171 @@ public class KaricoMotorPlayer extends AppCompatActivity {
     public void playerButtonsHandler (Integer buttonIdentNumber, ImageButton playerButton) throws IOException {
 
             if (playerableList != null){
+
+//                if (_musicStates != null) {
+//                    int size = _musicStates.size();
+//                    if (size > 0) {
+//                        for (int i = 0; i < size; i++){
+//                            if (_musicStates.get(i).getButtonType() == buttonIdentNumber){
+//                                prepareMusicPlayer(_musicStates.get(i).getMusicUri());
+//                                mediaPlayer.seekTo(_musicStates.get(i).getMusiccurrentPosition());
+//                                mediaPlayer.start();
+//                                playerButton.setImageResource(R.drawable.icons_pause);
+//                                playerButton.setTag(R.drawable.icons_pause);
+//                                return;
+//                            }
+//                        }
+//                    }
+//                }
+
                 if (playerableList.size() > 0) {
-
-                } else {
-                    //player list is empty
-                }
-            }
-
-
-            if (musicList != null) {
-                if (position < musicList.size()) {
-                    if (musicStates[buttonIdentNumber].getMusicUri() != null) {
-                                Log.i("Karico", "L123 " + musicStates[buttonIdentNumber].getMusiccurrentPosition());
-                                for (int  i = 0; i < musicStates.length; i++){
-                                    Log.i("Karico", musicStates[i] + " in array");
-                                }
-                                    if (musicStates[buttonIdentNumber].getMusiccurrentPosition() == musicStates[buttonIdentNumber].getMusicDuration() &&
-                                    musicStates[buttonIdentNumber].getMusiccurrentPosition() != 0 ){
-                                        Log.i("Karico", "L124 " + buttonIdentNumber);
-                                        musicStates[buttonIdentNumber] = null;
-                                    }
-                                prepareMusicPlayer(musicStates[buttonIdentNumber].getMusicUri());
-                                mediaPlayer.seekTo(musicStates[buttonIdentNumber].getMusiccurrentPosition());
-                    } else {
-                        prepareMusicPlayer(musicList.get(position));
-                    }
-                }
-
-                if (playerButton != null) {
-                    if(playerButton.getTag().equals(R.drawable.icons_play)) {
-                        if (musicList.size() > 0 || position < musicList.size()){
-                            if (playMusic()) {
-                                isActive = true;
-                                Log.i("Karico", position + " number");
-                                if (mediaPlayer != null){
-                                    if (mediaPlayer.isPlaying()){
-                                        if (musicStates[buttonIdentNumber] == null){
-                                            musicState = new MusicState(buttonIdentNumber, musicList.get(position),
-                                                    mediaPlayer.getCurrentPosition(), 0);
-                                            musicStates[buttonIdentNumber] = musicState;
+                    if (playerButton != null) {
+                        if (playerButton.getTag().equals(R.drawable.icons_play)) {
+                            if (_musicStates != null) {
+                                int _musicStateSize = _musicStates.size();
+                                if (_musicStateSize > 0) {
+                                    for (int _i = 0; _i < _musicStateSize; _i++){
+                                        if(_musicStates.get(_i).getButtonType() == buttonIdentNumber) {
+                                            prepareMusicPlayer(_musicStates.get(_i).getMusicUri());
+                                            _musicStates.add( _i,new MusicState(buttonIdentNumber, playerableList.get(buttonIdentNumber), mediaPlayer.getCurrentPosition(), mediaPlayer.getDuration()));
+                                            break;
                                         }
-                                        position++;
+                                    }
+                                } else {
+                                    if (position > EXPECTED_SIZE){
+                                        position = -1;
+                                    }
+                                    position++;
+                                    _musicStates.add(position, new MusicState(buttonIdentNumber, playerableList.get(buttonIdentNumber), mediaPlayer.getCurrentPosition(), mediaPlayer.getDuration()));
+                                    prepareMusicPlayer(playerableList.get(buttonIdentNumber));
+                                }
+
+                                if (playMusic()){
+                                    playerButton.setImageResource(R.drawable.icons_pause);
+                                    playerButton.setTag(R.drawable.icons_pause);
+                                } else {
+                                    playerButton.setImageResource(R.drawable.icons_play);
+                                    playerButton.setTag(R.drawable.icons_play);
+                                }
+                            }
+
+
+
+//                            prepareMusicPlayer(playerableList.get(buttonIdentNumber));
+//                            if (playMusic()) {
+//
+//
+//                                playerButton.setImageResource(R.drawable.icons_pause);
+//                                playerButton.setTag(R.drawable.icons_pause);
+//                                if (_musicStates != null) {
+//                                    int _musicStateSize = _musicStates.size();
+//                                    if (_musicStateSize > 0) {
+//                                        for (int _i = 0; _i < _musicStateSize; _i++){
+//                                            if(_musicStates.get(_i).getButtonType() == buttonIdentNumber) {
+//                                                _musicStates.add( _i,new MusicState(buttonIdentNumber, playerableList.get(buttonIdentNumber), mediaPlayer.getCurrentPosition(), mediaPlayer.getDuration()));
+//                                                break;
+//                                            }
+//                                        }
+//                                    } else {
+//                                        if (position > EXPECTED_SIZE){
+//                                            position = -1;
+//                                        }
+//                                        position++;
+//                                        _musicStates.add(position, new MusicState(buttonIdentNumber, playerableList.get(buttonIdentNumber), mediaPlayer.getCurrentPosition(), mediaPlayer.getDuration()));
+//                                    }
+//                                }
+//                            } else {
+//                                playerButton.setImageResource(R.drawable.icons_play);
+//                                playerButton.setTag(R.drawable.icons_play);
+//                            }
+                        } else if (playerButton.getTag().equals(R.drawable.icons_pause)) {
+                            if (pauseMusic()){
+                                int _musicStateSize = _musicStates.size();
+                                if (_musicStateSize > 0){
+                                    for (int ui = 0; ui < _musicStateSize; ui++) {
+                                        if (_musicStates.get(ui).getButtonType() == buttonIdentNumber) {
+                                            _musicStates.get(ui).setMusiccurrentPosition(mediaPlayer.getCurrentPosition());
+                                            break;
+                                        }
                                     }
                                 }
-//                                if (musicState.isInserted()) {
-//                                    musicState.setInserted(false);
-//                                }
-                                playerButton.setImageResource(R.drawable.icons_pause);
-                                playerButton.setTag(R.drawable.icons_pause);
-                                Log.i("Karico ", "position " + position + " " + musicList.size());
-                            } else {
-                                isActive = false;
                                 playerButton.setImageResource(R.drawable.icons_play);
                                 playerButton.setTag(R.drawable.icons_play);
                             }
-                        } else {
-                            Toast.makeText(this, "Loading music", Toast.LENGTH_LONG).show();
-                        }
-                    } else if ( playerButton.getTag().equals(R.drawable.icons_pause)) {
-                        if (pauseMusic()) {
-                            isActive = false;
-                            isPaused = false;
-                            if (musicStates[buttonIdentNumber] != null){
-                                musicStates[buttonIdentNumber]
-                                        .setMusiccurrentPosition(mediaPlayer.getCurrentPosition());
-                            }
-                            playerButton.setImageResource(R.drawable.icons_play);
-                            playerButton.setTag(R.drawable.icons_play);
                         }
                     }
+
+                } else {
+                    //player list is empty
+                    Toast.makeText(this, "Music list empty", Toast.LENGTH_LONG).show();
+                    return;
                 }
             }
+
+
+//            if (musicList != null) {
+//                if (position < musicList.size()) {
+//                    if (musicStates[buttonIdentNumber].getMusicUri() != null) {
+//                                Log.i("Karico", "L123 " + musicStates[buttonIdentNumber].getMusiccurrentPosition());
+//                                for (int  i = 0; i < musicStates.length; i++){
+//                                    Log.i("Karico", musicStates[i] + " in array");
+//                                }
+//                                    if (musicStates[buttonIdentNumber].getMusiccurrentPosition() == musicStates[buttonIdentNumber].getMusicDuration() &&
+//                                    musicStates[buttonIdentNumber].getMusiccurrentPosition() != 0 ){
+//                                        Log.i("Karico", "L124 " + buttonIdentNumber);
+//                                        musicStates[buttonIdentNumber] = null;
+//                                    }
+//                                prepareMusicPlayer(musicStates[buttonIdentNumber].getMusicUri());
+//                                mediaPlayer.seekTo(musicStates[buttonIdentNumber].getMusiccurrentPosition());
+//                    } else {
+//                        prepareMusicPlayer(musicList.get(position));
+//                    }
+//                }
+
+//                if (playerButton != null) {
+//                    if(playerButton.getTag().equals(R.drawable.icons_play)) {
+//                        if (musicList.size() > 0 || position < musicList.size()){
+//                            if (playMusic()) {
+//                                isActive = true;
+//                                Log.i("Karico", position + " number");
+//                                if (mediaPlayer != null){
+//                                    if (mediaPlayer.isPlaying()){
+//                                        if (musicStates[buttonIdentNumber] == null){
+//                                            musicState = new MusicState(buttonIdentNumber, musicList.get(position),
+//                                                    mediaPlayer.getCurrentPosition(), 0);
+//                                            musicStates[buttonIdentNumber] = musicState;
+//                                        }
+//                                        position++;
+//                                    }
+//                                }
+////                                if (musicState.isInserted()) {
+////                                    musicState.setInserted(false);
+////                                }
+//                                playerButton.setImageResource(R.drawable.icons_pause);
+//                                playerButton.setTag(R.drawable.icons_pause);
+//                                Log.i("Karico ", "position " + position + " " + musicList.size());
+//                            } else {
+//                                isActive = false;
+//                                playerButton.setImageResource(R.drawable.icons_play);
+//                                playerButton.setTag(R.drawable.icons_play);
+//                            }
+//                        } else {
+//                            Toast.makeText(this, "Loading music", Toast.LENGTH_LONG).show();
+//                        }
+//                    } else if ( playerButton.getTag().equals(R.drawable.icons_pause)) {
+//                        if (pauseMusic()) {
+//                            isActive = false;
+//                            isPaused = false;
+//                            if (musicStates[buttonIdentNumber] != null){
+//                                musicStates[buttonIdentNumber]
+//                                        .setMusiccurrentPosition(mediaPlayer.getCurrentPosition());
+//                            }
+//                            playerButton.setImageResource(R.drawable.icons_play);
+//                            playerButton.setTag(R.drawable.icons_play);
+//                        }
+//                    }
+//                }
+//            }
     }
 
 
