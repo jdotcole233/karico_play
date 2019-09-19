@@ -23,6 +23,7 @@ public class KaricoPlayerEn {
     private Boolean isPlaying, isPaused = false;
     private int position = 0;
     private Uri uripaths;
+    private MusicState musicState;
 
     public KaricoPlayerEn(Context context){
         this.context = context;
@@ -41,8 +42,20 @@ public class KaricoPlayerEn {
         return musicList;
     }
 
+    public MusicState getMusicState() {
+        return musicState;
+    }
+
+    public void setMusicState(MusicState musicState) {
+        this.musicState = musicState;
+    }
+
     public MediaPlayer getMediaPlayer() {
         return mediaPlayer;
+    }
+
+    public int getPosition() {
+        return position;
     }
 
     public void prepareMusicPlayer(Uri currentMusicUri) throws IOException {
@@ -53,19 +66,30 @@ public class KaricoPlayerEn {
 
     }
 
-    public boolean playMusic(ImageButton imageButton) throws IOException{
+    public boolean playMusic(ImageButton imageButton, boolean orientation) throws IOException{
         if(mediaPlayer != null){
             if (musicList.size() > 0 && position < musicList.size()) {
                 if (imageButton.getTag().equals(R.drawable.icons_play)) {
-                    prepareMusicPlayer(musicList.get(position));
+                    if (orientation) {
+                        if (musicState != null) {
+                            prepareMusicPlayer(musicState.getMusicUri());
+                            getMediaPlayer().seekTo(musicState.getMusiccurrentPosition());
+                            Log.i("karico", "Retrieved in play");
+                        }
+                    } else {
+                        prepareMusicPlayer(musicList.get(position));
+                    }
                     imageButton.setImageResource(R.drawable.icons_pause);
                     imageButton.setTag(R.drawable.icons_pause);
+                    Log.i("Karico", imageButton.getTag() + "");
                     mediaPlayer.start();
                     isPlaying = true;
                 } else if (imageButton.getTag().equals(R.drawable.icons_pause)) {
                     if (pauseMusic()) {
                         imageButton.setImageResource(R.drawable.icons_play);
                         imageButton.setTag(R.drawable.icons_play);
+                        Log.i("Karico", imageButton.getTag() + "in pause");
+                        isPlaying = false;
                     }
                 }
 
@@ -79,7 +103,7 @@ public class KaricoPlayerEn {
             if (mediaPlayer.isPlaying()){
                 Log.i("Karico", "paused called ");
                 mediaPlayer.pause();
-                isPaused = false;
+                isPaused = true;
             }
         }
         return isPaused;
@@ -100,19 +124,26 @@ public class KaricoPlayerEn {
     public boolean forwardMusic() throws IOException {
         boolean isforwarded = false;
         if (mediaPlayer != null) {
-            position = position + 1;
-            Log.i("Karico", "forwarded");
-            if (isPlaying) {
-                setUpMusic(position);
+            if(position <= musicList.size()){
+                position = position + 1;
             }
+            Log.i("Karico", "forwarded");
+            if(isPlaying != null){
+                if (isPlaying) {
+                    setUpMusic(position);
+                }
+            }
+
         }
 
         return isforwarded;
     }
 
     public void setUpMusic(int currentPosition) throws IOException {
-        prepareMusicPlayer(musicList.get(currentPosition));
-        mediaPlayer.start();
+        if (currentPosition < musicList.size()){
+            prepareMusicPlayer(musicList.get(currentPosition));
+            mediaPlayer.start();
+        }
     }
 
     public boolean reverseMusic() throws IOException {
@@ -121,16 +152,19 @@ public class KaricoPlayerEn {
             if (position > 0) {
                 position = position - 1;
                 Log.i("Karico", "reversed");
-                if (isPlaying) {
-                    setUpMusic(position);
+                if (isPlaying != null){
+                    if (isPlaying) {
+                        setUpMusic(position);
+                    }
                 }
             } else {
                 position = 0;
                 Log.i("Karico", "reversed 0");
-                if (isPlaying) {
-                    setUpMusic(position);
+                if (isPlaying != null){
+                    if (isPlaying) {
+                        setUpMusic(position);
+                    }
                 }
-
             }
             isreversed = true;
         }

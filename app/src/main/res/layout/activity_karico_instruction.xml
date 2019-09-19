@@ -60,6 +60,7 @@
         android:layout_below="@+id/instructiondata"
         android:layout_alignParentRight="true"
         android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
         android:textColor="#ffffff"
         android:background="@drawable/button_rounded_edges"
         android:backgroundTint="#f58442"

@@ -73,7 +73,7 @@ public class KaricoMotorPlayer extends AppCompatActivity {
         musicList = new ArrayList<>();
         playerableList = new ArrayList<>();
         _musicStates = new ArrayList<>();
-        position = 0;
+        position = -1;
         playerNumber = -1;
         isActive = false;
 
@@ -211,9 +211,11 @@ public class KaricoMotorPlayer extends AppCompatActivity {
 
     public void shuffleMusicForButtons(int musiclistsize) {
         int j = musiclistsize;
+        Log.i("Karico", "size of music" + musiclistsize);
         for (int i = 0; i < EXPECTED_SIZE; i++) {
             j = j % musiclistsize;
             playerableList.add(i, musicList.get(j));
+            Log.i("Karico", "placed at " + j + " " + i);
             j = j + 1;
         }
     }
@@ -223,23 +225,6 @@ public class KaricoMotorPlayer extends AppCompatActivity {
     public void playerButtonsHandler (Integer buttonIdentNumber, ImageButton playerButton) throws IOException {
 
             if (playerableList != null){
-
-//                if (_musicStates != null) {
-//                    int size = _musicStates.size();
-//                    if (size > 0) {
-//                        for (int i = 0; i < size; i++){
-//                            if (_musicStates.get(i).getButtonType() == buttonIdentNumber){
-//                                prepareMusicPlayer(_musicStates.get(i).getMusicUri());
-//                                mediaPlayer.seekTo(_musicStates.get(i).getMusiccurrentPosition());
-//                                mediaPlayer.start();
-//                                playerButton.setImageResource(R.drawable.icons_pause);
-//                                playerButton.setTag(R.drawable.icons_pause);
-//                                return;
-//                            }
-//                        }
-//                    }
-//                }
-
                 if (playerableList.size() > 0) {
                     if (playerButton != null) {
                         if (playerButton.getTag().equals(R.drawable.icons_play)) {
@@ -249,6 +234,12 @@ public class KaricoMotorPlayer extends AppCompatActivity {
                                     for (int _i = 0; _i < _musicStateSize; _i++){
                                         if(_musicStates.get(_i).getButtonType() == buttonIdentNumber) {
                                             prepareMusicPlayer(_musicStates.get(_i).getMusicUri());
+                                            mediaPlayer.seekTo(_musicStates.get(_i).getMusiccurrentPosition());
+                                            Log.i("Karico", "music at " + buttonIdentNumber + " is " + _musicStates.get(_i).getMusiccurrentPosition() );
+                                            _musicStates.add( _i,new MusicState(buttonIdentNumber, playerableList.get(buttonIdentNumber), mediaPlayer.getCurrentPosition(), mediaPlayer.getDuration()));
+                                            break;
+                                        } else {
+                                            prepareMusicPlayer(playerableList.get(buttonIdentNumber));
                                             _musicStates.add( _i,new MusicState(buttonIdentNumber, playerableList.get(buttonIdentNumber), mediaPlayer.getCurrentPosition(), mediaPlayer.getDuration()));
                                             break;
                                         }
@@ -260,6 +251,8 @@ public class KaricoMotorPlayer extends AppCompatActivity {
                                     position++;
                                     _musicStates.add(position, new MusicState(buttonIdentNumber, playerableList.get(buttonIdentNumber), mediaPlayer.getCurrentPosition(), mediaPlayer.getDuration()));
                                     prepareMusicPlayer(playerableList.get(buttonIdentNumber));
+                                    Log.i("Karico", "music at " + buttonIdentNumber + " is " + playerableList.get(buttonIdentNumber) );
+
                                 }
 
                                 if (playMusic()){
@@ -319,7 +312,7 @@ public class KaricoMotorPlayer extends AppCompatActivity {
 
                 } else {
                     //player list is empty
-                    Toast.makeText(this, "Music list empty", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Music content loading....", Toast.LENGTH_LONG).show();
                     return;
                 }
             }
@@ -482,4 +475,22 @@ public class KaricoMotorPlayer extends AppCompatActivity {
 
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mediaPlayer.isPlaying()){
+            stopMusic();
+        }
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mediaPlayer.isPlaying()) {
+            stopMusic();
+            resetPlayerButton(playerNumber);
+        }
+    }
 }

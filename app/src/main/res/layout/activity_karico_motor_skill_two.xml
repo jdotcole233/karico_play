@@ -28,7 +28,6 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/intermediaryheader"
         android:orientation="horizontal"
-        android:padding="5dp"
         >
 
         <ImageButton
@@ -37,9 +36,9 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:src="@drawable/icons_reverse"
-            android:elevation="13dp"
             android:backgroundTint="#fc6203"
-            android:background="@drawable/button_rounded_edges"
+            android:layout_marginRight="5dp"
+            android:elevation="3dp"
 
             />
 
@@ -49,9 +48,9 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:src="@drawable/icons_play"
-            android:elevation="13dp"
             android:backgroundTint="#c6ff4a"
-            android:background="@drawable/button_rounded_edges"
+            android:elevation="8dp"
+
 
             />
         <ImageButton
@@ -61,9 +60,8 @@
             android:layout_height="match_parent"
             android:src="@drawable/icons_fast_forward"
             android:backgroundTint="#fca103"
-            android:background="@drawable/button_rounded_edges"
-            android:elevation="13dp"
-
+            android:layout_marginLeft="5dp"
+            android:elevation="3dp"
             />
     </LinearLayout>
 

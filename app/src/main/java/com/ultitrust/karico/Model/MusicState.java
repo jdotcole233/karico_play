@@ -2,7 +2,9 @@ package com.ultitrust.karico.Model;
 
 import android.net.Uri;
 
-public class MusicState {
+import java.io.Serializable;
+
+public class MusicState implements Serializable {
     private int buttonType;
     private Uri musicUri;
     private int musiccurrentPosition;
