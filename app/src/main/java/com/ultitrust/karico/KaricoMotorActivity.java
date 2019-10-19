@@ -293,12 +293,16 @@ public class KaricoMotorActivity extends AppCompatActivity {
                      documentsFromURIs = DocumentFile.fromTreeUri(this, uri);
                     if (documentsFromURIs.exists()){
                         if (documentsFromURIs.isDirectory()){
+                            for (DocumentFile songpath : documentsFromURIs.listFiles()){
+                                size++;
+                            }
                             if (musicModels != null){
                                 folderSizeInMB = documentsFromURIs.length() /1024;
-                                musicModels.add(new MusicModel(documentsFromURIs.getName(), folderSizeInMB + " MB -", size + " Songs", uri));
+                                musicModels.add(new MusicModel(documentsFromURIs.getName(), folderSizeInMB + " MB - ", size + " Songs", uri));
                                 recyclerViewAdapter.notifyDataSetChanged();
                             }
-                        } else if (documentsFromURIs.isFile()){
+                            size = 0;
+                        } else {
                             Toast.makeText(this,"Sorry, you cannot add single files, add a directory", Toast.LENGTH_LONG).show();
                             return;
                         }

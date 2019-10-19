@@ -10,15 +10,15 @@
     <RelativeLayout
         android:id="@+id/intermediaryheader"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="20dp"
         android:layout_alignParentTop="true"
         android:background="@drawable/menu_background"
         >
 
         <ImageButton
             android:id="@+id/skillstwobackbtn"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:src="@drawable/ic_close_black_24dp"
             android:background="@drawable/menu_background"
             />

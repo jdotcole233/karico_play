@@ -8,7 +8,7 @@
     android:orientation="horizontal"
     android:padding="10dp"
     android:background="@drawable/music_row_background"
-    android:backgroundTint="#ffffff"
+    android:backgroundTint="#95ffffff"
     android:layout_marginTop="5dp"
     android:id="@+id/selectFolderCard"
     >
@@ -23,6 +23,7 @@
         android:backgroundTint="#70C5EB"
         android:layout_alignParentLeft="true"
         android:layout_centerInParent="true"
+
         />
 
     <LinearLayout
@@ -33,6 +34,7 @@
         android:layout_toRightOf="@+id/folderImage"
         android:paddingLeft="5dp"
         android:layout_centerInParent="true"
+
         >
         <TextView
             android:id="@+id/folderName"
@@ -79,7 +81,5 @@
         android:scaleType="fitCenter"
         android:layout_centerInParent="true"
         />
-
-
 
 </RelativeLayout>

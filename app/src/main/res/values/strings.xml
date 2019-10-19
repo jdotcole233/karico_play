@@ -7,4 +7,12 @@
         2. Select a folder containing music
         you will like to add to playlist.
     </string>
+    <string name="menu">MENU</string>
+    <string name="choose_following">Choose one of the following</string>
+    <string name="motor_activity">Motor Activity</string>
+    <string name="speech_pronunciation">Speech/Pronunciation</string>
+    <string name="other">Other+</string>
+    <string name="children_playing_image">children playing image</string>
+    <string name="microphone_craft_image">microphone craft image</string>
+    <string name="music_craft_image">music craft image</string>
 </resources>

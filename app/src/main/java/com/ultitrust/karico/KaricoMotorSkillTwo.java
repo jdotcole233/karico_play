@@ -123,18 +123,20 @@ public class KaricoMotorSkillTwo extends AppCompatActivity {
                 }
             }
         });
-
-
-
-
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         if (karicoPlayerEn.getMediaPlayer().isPlaying()){
             karicoPlayerEn.stopMusic();
+            playBtn.setImageResource(R.drawable.icons_play);
+            playBtn.setTag(R.drawable.icons_play);
         }
     }
 
@@ -157,6 +159,8 @@ public class KaricoMotorSkillTwo extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         if (karicoPlayerEn.getMediaPlayer().isPlaying()){
+            playBtn.setImageResource(R.drawable.icons_play);
+            playBtn.setTag(R.drawable.icons_play);
             karicoPlayerEn.stopMusic();
         }
     }
