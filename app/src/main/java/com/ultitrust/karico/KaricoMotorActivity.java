@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -27,8 +28,11 @@ import com.ultitrust.karico.Model.MusicModel;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import static com.ultitrust.karico.Adapter.KaricoContracts.MUSIC_SAVED_NAME;
@@ -74,8 +78,6 @@ public class KaricoMotorActivity extends AppCompatActivity {
         recyclerView.setAdapter(recyclerViewAdapter);
 
 
-
-
         String readFolders = readSavedFolderList();
         if (readFolders != null){
             if(!readFolders.isEmpty()){
@@ -113,6 +115,16 @@ public class KaricoMotorActivity extends AppCompatActivity {
                 Integer numberOfChanges = 0;
                 if (savedMusicPaths != null){
                     size_of_savedpaths = musicModels.size();
+
+                    if (musicModels != null) {
+                        for (int  count = 0; count < musicModels.size(); count++){
+                            Log.i("karico", "musicmodel " + musicModels.get(count).getFolder_path());
+                        }
+                        for (Uri uri : savedMusicPaths){
+                            Log.i("karico", "musicmodel c1 " + uri);
+                        }
+                    }
+
                     if (size_of_savedpaths == size_of_readFolderList && size_of_savedpaths !=0 ){
                         for (int i = 0; i < size_of_savedpaths; i++){
                              if (!originalMusicPaths.contains(savedMusicPaths.get(i))){
@@ -130,7 +142,9 @@ public class KaricoMotorActivity extends AppCompatActivity {
                             }
                         }
 
+
                     } else if (size_of_savedpaths > size_of_readFolderList) {
+
                         numberOfChanges = size_of_savedpaths - originalMusicPaths.size();
                         String message = "Karico found that you added " + numberOfChanges + " new folders to existing playlist.\n" +
                                 "Do you want to save changes?";
@@ -231,13 +245,17 @@ public class KaricoMotorActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.setPrettyPrinting().create();
-        ArrayList<String> a = new ArrayList<>();
+        ArrayList<String> savingmusic = new ArrayList<>();
 
         for (Uri uri : save_musiclist) {
-             a.add(Uri.encode(uri.toString()));
+            for (int count = 0; count < musicModels.size(); count++){
+                if (musicModels.get(count).getFolder_path().equals(uri)){
+                    savingmusic.add(Uri.encode(uri.toString()));
+                }
+            }
         }
 
-        String music_save_json = gson.toJson(a);
+        String music_save_json = gson.toJson(savingmusic);
         editor.putString("KARICO_SAVED", music_save_json);
         editor.apply();
     }

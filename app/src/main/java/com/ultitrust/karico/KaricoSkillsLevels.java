@@ -51,7 +51,7 @@ public class KaricoSkillsLevels extends AppCompatActivity {
                         primaryMotorIntent.putExtra("primaryMotorFolderPath", musicUriEndcodedString);
                         startActivity(primaryMotorIntent);
                     } else {
-                        Toast.makeText(KaricoSkillsLevels.this, "Somwething went wrong, please try again", Toast.LENGTH_LONG).show();
+                        Toast.makeText(KaricoSkillsLevels.this, "Something went wrong, please try again", Toast.LENGTH_LONG).show();
                         return;
                     }
                 }
@@ -67,7 +67,7 @@ public class KaricoSkillsLevels extends AppCompatActivity {
                         intermediaryMotorIntent.putExtra("primaryMotorFolderPath", musicUriEndcodedString);
                         startActivity(intermediaryMotorIntent);
                     } else {
-                        Toast.makeText(KaricoSkillsLevels.this, "Somwething went wrong, please try again", Toast.LENGTH_LONG).show();
+                        Toast.makeText(KaricoSkillsLevels.this, "Something went wrong, please try again", Toast.LENGTH_LONG).show();
                         return;
                     }
                 }

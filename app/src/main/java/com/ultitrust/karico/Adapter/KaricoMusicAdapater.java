@@ -20,12 +20,14 @@ import com.ultitrust.karico.KaricoSkillsLevels;
 import com.ultitrust.karico.Model.MusicModel;
 import com.ultitrust.karico.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class KaricoMusicAdapater extends RecyclerView.Adapter<KaricoMusicAdapater.MyViewHolder> {
 
 
     private List<MusicModel> musicModels;
+    public ArrayList deletedMusic;
     private Context context;
     private RecyclerView recyclerView;
 
@@ -33,6 +35,7 @@ public class KaricoMusicAdapater extends RecyclerView.Adapter<KaricoMusicAdapate
         this.musicModels = musicModels;
         this.context = context;
         this.recyclerView = recyclerView;
+        deletedMusic = new ArrayList();
         Log.i("Karico", musicModels.size() + "");
     }
 
@@ -41,6 +44,16 @@ public class KaricoMusicAdapater extends RecyclerView.Adapter<KaricoMusicAdapate
          View myview = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.activity_music_row_view, viewGroup, false);
 
         return new MyViewHolder(myview);
+    }
+
+
+    public List<MusicModel> getMusicModels() {
+        return musicModels;
+    }
+
+
+    public ArrayList getDeletedMusic() {
+        return deletedMusic;
     }
 
     @Override
@@ -52,10 +65,10 @@ public class KaricoMusicAdapater extends RecyclerView.Adapter<KaricoMusicAdapate
             myViewHolder.remove_folder_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    deletedMusic.add(musicModels.get(i).getFolder_name());
                     musicModels.remove(i);
                     recyclerView.getAdapter().notifyItemRemoved(i);
                     recyclerView.getAdapter().notifyDataSetChanged();
-//                    Toast.makeText(context, "Folder clicked " + i + " " + musicModels.get(i).getFolder_name(), Toast.LENGTH_LONG).show();
                 }
             });
 
@@ -79,8 +92,6 @@ public class KaricoMusicAdapater extends RecyclerView.Adapter<KaricoMusicAdapate
     public int getItemCount() {
         return musicModels.size();
     }
-
-
 
 
     public class  MyViewHolder extends RecyclerView.ViewHolder {
