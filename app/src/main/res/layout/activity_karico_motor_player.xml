@@ -15,14 +15,36 @@
         android:layout_alignParentTop="true"
         android:background="@drawable/menu_background"
         >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <ImageButton
+                android:id="@+id/playerbackbtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_arrow_back_black_24dp"
+                android:background="@drawable/menu_background"
+                android:layout_gravity="center"
+                />
 
-        <ImageButton
-            android:id="@+id/playerbackbtn"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_arrow_back_black_24dp"
-            android:background="@drawable/menu_background"
-            />
+             <TextView
+                 android:id="@+id/musicplayingtext"
+                 android:layout_width="match_parent"
+                 android:layout_height="30dp"
+                 android:text="Music Playing"
+                 android:gravity="center"
+                 android:layout_gravity="center"
+                 android:fontFamily="sans-serif-lightserif"
+                 android:textAllCaps="false"
+                 android:textColor="#fff"
+                 />
+
+        </LinearLayout>
+
+
+
 
     </RelativeLayout>
 

@@ -1,7 +1,11 @@
 package com.ultitrust.karico;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
@@ -14,14 +18,20 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ultitrust.karico.Model.ColorRandomizer;
 import com.ultitrust.karico.Model.MusicModel;
 import com.ultitrust.karico.Model.MusicState;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class KaricoMotorPlayer extends AppCompatActivity {
@@ -38,6 +48,8 @@ public class KaricoMotorPlayer extends AppCompatActivity {
     boolean isLoaded = false , isPaused = false;
     private MusicState musicState;
     private final int EXPECTED_SIZE = 5;
+    private TextView displayMusicText;
+    private ColorRandomizer colorRandomizer;
 
 
     @Override
@@ -51,6 +63,20 @@ public class KaricoMotorPlayer extends AppCompatActivity {
         lowerLeftPlayerBtn = findViewById(R.id.lowerleftplayerButton);
         lowerRightPlayerBtn = findViewById(R.id.lowerrightplayerButton);
         centerPlayerBtn = findViewById(R.id.centerplayerButton);
+        displayMusicText = findViewById(R.id.musicplayingtext);
+        colorRandomizer = new ColorRandomizer();
+        String [] colorspectrum = {"#66ff66", "#cc00cc", "#ff9933", "#007acc", "#5200cc", "#660066", "#86592d", "#cc3300"};
+        List<Integer> genNumbers = colorRandomizer.colorRandomizer();
+
+        if (genNumbers != null){
+            upperLeftPlayerBtn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(colorspectrum[genNumbers.get(0)])));
+            upperRightPlayerBtn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(colorspectrum[genNumbers.get(1)])));
+            centerPlayerBtn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(colorspectrum[genNumbers.get(2)])));
+            lowerLeftPlayerBtn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(colorspectrum[genNumbers.get(3)])));
+            lowerRightPlayerBtn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(colorspectrum[genNumbers.get(4)])));
+        }
+
+
 
         upperLeftPlayerBtn.setTag(R.drawable.icons_play);
         upperRightPlayerBtn.setTag(R.drawable.icons_play);
@@ -100,7 +126,6 @@ public class KaricoMotorPlayer extends AppCompatActivity {
         upperLeftPlayerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                mediaPlayerUpperLeft = new MediaPlayer();
                 try {
                     resetPlayerButton(playerNumber);
                     playerNumber = 4;
@@ -108,7 +133,6 @@ public class KaricoMotorPlayer extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(KaricoMotorPlayer.this, "Upper Left Button  Tapped", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -124,7 +148,6 @@ public class KaricoMotorPlayer extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(KaricoMotorPlayer.this, "Upper Right Button Tapped", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -140,7 +163,6 @@ public class KaricoMotorPlayer extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(KaricoMotorPlayer.this, "Lower Left Button Tapped", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -156,7 +178,6 @@ public class KaricoMotorPlayer extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(KaricoMotorPlayer.this, "Lower Right Button Tapped", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -174,7 +195,6 @@ public class KaricoMotorPlayer extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(KaricoMotorPlayer.this, "Center Tapped", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -188,12 +208,11 @@ public class KaricoMotorPlayer extends AppCompatActivity {
 
                 if (musicsize <= 0 ) {
                     isLoaded = false;
-                    Log.i("Karico", "No tracks loaded Thread finished ");
+                    displayMusicText.setText("No music files loaded ");
                 } else {
                     shuffleMusicForButtons(musicsize);
                     isLoaded = true;
-                    Log.i("Karico", "Completed loading tracks Thread finished ");
-
+                    displayMusicText.setText("Completed loading music files");
                 }
 
             }
@@ -211,18 +230,22 @@ public class KaricoMotorPlayer extends AppCompatActivity {
 
     public void shuffleMusicForButtons(int musiclistsize) {
         int j = musiclistsize;
-        Log.i("Karico", "size of music" + musiclistsize);
         for (int i = 0; i < EXPECTED_SIZE; i++) {
             j = j % musiclistsize;
             playerableList.add(i, musicList.get(j));
-            Log.i("Karico", "placed at " + j + " " + i);
             j = j + 1;
         }
     }
 
 
+
+
+
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void playerButtonsHandler (Integer buttonIdentNumber, ImageButton playerButton) throws IOException {
+
+            String musicName = "";
 
             if (playerableList != null){
                 if (playerableList.size() > 0) {
@@ -236,11 +259,13 @@ public class KaricoMotorPlayer extends AppCompatActivity {
                                             prepareMusicPlayer(_musicStates.get(_i).getMusicUri());
                                             mediaPlayer.seekTo(_musicStates.get(_i).getMusiccurrentPosition());
                                             Log.i("Karico", "music at " + buttonIdentNumber + " is " + _musicStates.get(_i).getMusiccurrentPosition() );
+                                            musicName = colorRandomizer.getMusicName(KaricoMotorPlayer.this, playerableList.get(buttonIdentNumber));
                                             _musicStates.add( _i,new MusicState(buttonIdentNumber, playerableList.get(buttonIdentNumber), mediaPlayer.getCurrentPosition(), mediaPlayer.getDuration()));
                                             break;
                                         } else {
                                             prepareMusicPlayer(playerableList.get(buttonIdentNumber));
                                             _musicStates.add( _i,new MusicState(buttonIdentNumber, playerableList.get(buttonIdentNumber), mediaPlayer.getCurrentPosition(), mediaPlayer.getDuration()));
+                                            musicName = colorRandomizer.getMusicName(KaricoMotorPlayer.this, playerableList.get(buttonIdentNumber));
                                             break;
                                         }
                                     }
@@ -251,16 +276,18 @@ public class KaricoMotorPlayer extends AppCompatActivity {
                                     position++;
                                     _musicStates.add(position, new MusicState(buttonIdentNumber, playerableList.get(buttonIdentNumber), mediaPlayer.getCurrentPosition(), mediaPlayer.getDuration()));
                                     prepareMusicPlayer(playerableList.get(buttonIdentNumber));
-                                    Log.i("Karico", "music at " + buttonIdentNumber + " is " + playerableList.get(buttonIdentNumber) );
+                                    musicName = colorRandomizer.getMusicName(KaricoMotorPlayer.this, playerableList.get(buttonIdentNumber));
 
                                 }
 
                                 if (playMusic()){
                                     playerButton.setImageResource(R.drawable.icons_pause);
                                     playerButton.setTag(R.drawable.icons_pause);
+                                    displayMusicText.setText(musicName);
                                 } else {
                                     playerButton.setImageResource(R.drawable.icons_play);
                                     playerButton.setTag(R.drawable.icons_play);
+                                    displayMusicText.setText(" ");
                                 }
                             }
                         } else if (playerButton.getTag().equals(R.drawable.icons_pause)) {
@@ -276,6 +303,7 @@ public class KaricoMotorPlayer extends AppCompatActivity {
                                 }
                                 playerButton.setImageResource(R.drawable.icons_play);
                                 playerButton.setTag(R.drawable.icons_play);
+                                displayMusicText.setText(" ");
                             }
                         }
                     }
@@ -366,6 +394,7 @@ public class KaricoMotorPlayer extends AppCompatActivity {
                                 if (musicList != null){
                                     Log.i("Karico", "Loading music 6");
                                     musicList.add(file.getUri());
+
                                 }
                             }
                             Log.i("Karico", "folder content karico " + file.getType() + " " + file.length());
@@ -379,6 +408,11 @@ public class KaricoMotorPlayer extends AppCompatActivity {
         }
 
     }
+
+
+
+
+
 
 
     @Override
