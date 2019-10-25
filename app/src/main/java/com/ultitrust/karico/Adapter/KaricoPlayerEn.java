@@ -24,6 +24,7 @@ public class KaricoPlayerEn {
     private int position = 0;
     private Uri uripaths;
     private MusicState musicState;
+    private Uri currentUri;
 
     public KaricoPlayerEn(Context context){
         this.context = context;
@@ -37,6 +38,9 @@ public class KaricoPlayerEn {
         this.uripaths = uripaths;
     }
 
+    public Uri getUripaths() {
+        return uripaths;
+    }
 
     public ArrayList<Uri> getMusicList() {
         return musicList;
@@ -75,9 +79,14 @@ public class KaricoPlayerEn {
                             prepareMusicPlayer(musicState.getMusicUri());
                             getMediaPlayer().seekTo(musicState.getMusiccurrentPosition());
                             Log.i("karico", "Retrieved in play");
+                            setUripaths(musicState.getMusicUri());
+
                         }
                     } else {
                         prepareMusicPlayer(musicList.get(position));
+                        Log.i("karico", "track info " + musicList.get(position));
+                        setUripaths(musicList.get(position));
+
                     }
                     imageButton.setImageResource(R.drawable.icons_pause);
                     imageButton.setTag(R.drawable.icons_pause);

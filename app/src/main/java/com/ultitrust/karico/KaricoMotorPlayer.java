@@ -65,15 +65,23 @@ public class KaricoMotorPlayer extends AppCompatActivity {
         centerPlayerBtn = findViewById(R.id.centerplayerButton);
         displayMusicText = findViewById(R.id.musicplayingtext);
         colorRandomizer = new ColorRandomizer();
-        String [] colorspectrum = {"#66ff66", "#cc00cc", "#ff9933", "#007acc", "#5200cc", "#660066", "#86592d", "#cc3300"};
+        String [] colorspectrum = {"#66ff66", "#cc00cc", "#ff9933", "#007acc", "#5200cc",
+                "#660066", "#86592d", "#cc3300", "#e69900", "#adad85", "#2e2e1f",
+                "#00ff00", "#004d00", "#000080", "#9999ff", "#ff33ff"};
         List<Integer> genNumbers = colorRandomizer.colorRandomizer();
 
         if (genNumbers != null){
+            upperLeftPlayerBtn.setColorFilter(Color.WHITE);
             upperLeftPlayerBtn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(colorspectrum[genNumbers.get(0)])));
             upperRightPlayerBtn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(colorspectrum[genNumbers.get(1)])));
+            upperRightPlayerBtn.setColorFilter(Color.WHITE);
             centerPlayerBtn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(colorspectrum[genNumbers.get(2)])));
+//            centerPlayerBtn.setColorFilter(Color.WHITE);
             lowerLeftPlayerBtn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(colorspectrum[genNumbers.get(3)])));
+            lowerLeftPlayerBtn.setColorFilter(Color.WHITE);
             lowerRightPlayerBtn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(colorspectrum[genNumbers.get(4)])));
+            lowerRightPlayerBtn.setColorFilter(Color.WHITE);
+
         }
 
 
@@ -260,6 +268,7 @@ public class KaricoMotorPlayer extends AppCompatActivity {
                                             mediaPlayer.seekTo(_musicStates.get(_i).getMusiccurrentPosition());
                                             Log.i("Karico", "music at " + buttonIdentNumber + " is " + _musicStates.get(_i).getMusiccurrentPosition() );
                                             musicName = colorRandomizer.getMusicName(KaricoMotorPlayer.this, playerableList.get(buttonIdentNumber));
+                                            Log.i("Karico", "track info " + playerableList.get(buttonIdentNumber));
                                             _musicStates.add( _i,new MusicState(buttonIdentNumber, playerableList.get(buttonIdentNumber), mediaPlayer.getCurrentPosition(), mediaPlayer.getDuration()));
                                             break;
                                         } else {

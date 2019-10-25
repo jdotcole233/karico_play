@@ -53,62 +53,86 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/musicselectionheader"
         >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="4"
+            android:padding="4dp"
+            >
 
-        <ImageButton
-            android:id="@+id/upperleftplayerButton"
-            android:layout_width="195dp"
-            android:layout_height="290dp"
-            android:src="@drawable/icons_play"
-            android:background="@drawable/motor_player_buttons"
-            android:backgroundTint="#863333"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:elevation="13dp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="2"
+                android:padding="5dp"
+                >
 
-            />
+                <ImageButton
+                    android:id="@+id/upperleftplayerButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/icons_play"
+                    android:background="@drawable/motor_player_buttons"
+                    android:backgroundTint="#863333"
+                    android:elevation="13dp"
+                    android:layout_marginRight="10dp"
+                    />
 
-        <ImageButton
-            android:id="@+id/upperrightplayerButton"
-            android:layout_width="195dp"
-            android:layout_height="290dp"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/icons_play"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/motor_player_buttons"
-            android:backgroundTint="#D9C659"
-            android:elevation="13dp"
+                <ImageButton
+                    android:id="@+id/upperrightplayerButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/icons_play"
+                    android:background="@drawable/motor_player_buttons"
+                    android:backgroundTint="#D9C659"
+                    android:elevation="13dp"
 
-            />
+                    />
 
-        <ImageButton
-            android:id="@+id/lowerleftplayerButton"
-            android:layout_width="195dp"
-            android:layout_height="290dp"
-            android:layout_alignParentBottom="true"
-            android:src="@drawable/icons_play"
-            android:background="@drawable/motor_player_buttons"
-            android:layout_marginLeft="5dp"
-            android:layout_marginBottom="15dp"
-            android:backgroundTint="#363386"
-            android:elevation="13dp"
 
-            />
+            </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/lowerrightplayerButton"
-            android:layout_width="195dp"
-            android:layout_height="290dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:src="@drawable/icons_play"
-            android:background="@drawable/motor_player_buttons"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="15dp"
-            android:backgroundTint="#7ACC66"
-            android:elevation="13dp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="2"
+                android:padding="5dp"
+                >
 
-            />
+                <ImageButton
+                    android:id="@+id/lowerleftplayerButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/icons_play"
+                    android:background="@drawable/motor_player_buttons"
+                    android:backgroundTint="#363386"
+                    android:elevation="13dp"
+                    android:layout_marginRight="10dp"
+
+
+                    />
+
+                <ImageButton
+                    android:id="@+id/lowerrightplayerButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/icons_play"
+                    android:background="@drawable/motor_player_buttons"
+                    android:backgroundTint="#7ACC66"
+                    android:elevation="13dp"
+
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
         <ImageButton
             android:id="@+id/centerplayerButton"

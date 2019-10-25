@@ -17,11 +17,11 @@ public class ColorRandomizer {
         List<Integer> randomNumbers = new ArrayList<>();
         Random random = new Random();
         for (int start = 0; start < RANDOMIZERNUMBER; start++){
-            int r_gen = random.nextInt(8);
+            int r_gen = random.nextInt(16);
             randomNumbers.add(r_gen);
             for (int s_start = 0; s_start < start; s_start++){
                 if (randomNumbers.get(s_start).equals(r_gen)){
-                    randomNumbers.add(random.nextInt(8));
+                    randomNumbers.add(random.nextInt(16));
                 }
             }
         }
