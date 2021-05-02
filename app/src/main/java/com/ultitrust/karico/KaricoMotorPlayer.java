@@ -216,11 +216,11 @@ public class KaricoMotorPlayer extends AppCompatActivity {
 
                 if (musicsize <= 0 ) {
                     isLoaded = false;
-                    displayMusicText.setText("No music files loaded ");
+                   // displayMusicText.setText("No music files loaded ");
                 } else {
                     shuffleMusicForButtons(musicsize);
                     isLoaded = true;
-                    displayMusicText.setText("Completed loading music files");
+                   // displayMusicText.setText("Completed loading music files");
                 }
 
             }

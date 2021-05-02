@@ -67,6 +67,7 @@ public class KaricoMotorSkillTwo extends AppCompatActivity {
         Intent musicFolderIntent = getIntent();
         String musicPathStringUri = musicFolderIntent.getStringExtra("primaryMotorFolderPath");
         musicPathUri = Uri.parse(Uri.decode(musicPathStringUri));
+        Log.i("CheckMe", musicPathStringUri + "\n" + musicPathUri);
 
         if (musicPathUri != null) {
             karicoPlayerEn.setUripaths(musicPathUri);
@@ -87,7 +88,7 @@ public class KaricoMotorSkillTwo extends AppCompatActivity {
             public void run() {
                 karicoPlayerEn.musicLoading();
 //                Log.i("Karico", "Music Loaded ");
-                musictext.setText("Music Loaded ");
+                //musictext.setText("Music Loaded ");
             }
         });
 
@@ -140,9 +141,12 @@ public class KaricoMotorSkillTwo extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    karicoPlayerEn.forwardMusic();
-                    musicTitle = colorRandomizer.getMusicName(KaricoMotorSkillTwo.this, karicoPlayerEn.getUripaths());
-                    musictext.setText(musicTitle);
+                    if(karicoPlayerEn.forwardMusic()){
+                        musicTitle = colorRandomizer.getMusicName(KaricoMotorSkillTwo.this, karicoPlayerEn.getUripaths());
+                        musictext.setText(musicTitle);
+                        Log.i("karico", "track info " + musicTitle);
+                    }
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -157,6 +161,7 @@ public class KaricoMotorSkillTwo extends AppCompatActivity {
                     karicoPlayerEn.reverseMusic();
                     musicTitle = colorRandomizer.getMusicName(KaricoMotorSkillTwo.this, karicoPlayerEn.getUripaths());
                     musictext.setText(musicTitle);
+                    Log.i("karico", "track info " + musicTitle);
                 }catch (IOException e){
                     e.printStackTrace();
                 }
